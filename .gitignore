@@ -53,10 +53,8 @@ Desktop.ini
 *.log
 .cache/
 data/processed/*
-!data/processed/.gitkeep
 
 # Raw data policy: documentation is versioned; acquired data is ignored by
 # default. A small public source file may be force-added only after provenance,
 # source terms, size, dimensions, and SHA-256 are recorded.
 data/raw/*
-!data/raw/.gitkeep
