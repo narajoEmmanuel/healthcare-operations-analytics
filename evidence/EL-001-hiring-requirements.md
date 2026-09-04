@@ -44,7 +44,7 @@ The authoritative URL register and access dates are in [`../research/references.
 
 ## Repository evidence and related commit
 
-Foundation commit: pending first substantive commit. This field will be updated in a separate evidence commit to avoid circular Git evidence.
+Foundation commit: `929738d7ee294ff62cfd0b721826d6262784f811` (`docs: establish project research and repository foundation`). This evidence registration is committed separately so the reference is not circular.
 
 ## Limitations
 

@@ -4,8 +4,8 @@ This is the master index for verified project milestones. The linked evidence fi
 
 | ID | Milestone | Status | Date | Evidence | Primary artifact | Commit |
 | --- | --- | --- | --- | --- | --- | --- |
-| EL-001 | Hiring Requirements Research | Verified with limitations | 2026-09-04 | [Detailed record](evidence/EL-001-hiring-requirements.md) | [Hiring market research](research/hiring-market-research.md) | Pending foundation commit |
-| EL-002 | Dataset Research and Live Access Verification | Verified for selection and limited public access; acquisition pending | 2026-09-04 | [Detailed record](evidence/EL-002-dataset-research-access.md) | [Dataset research](research/dataset-research.md) | Pending foundation commit |
+| EL-001 | Hiring Requirements Research | Verified with limitations | 2026-09-04 | [Detailed record](evidence/EL-001-hiring-requirements.md) | [Hiring market research](research/hiring-market-research.md) | `929738d` |
+| EL-002 | Dataset Research and Live Access Verification | Verified for selection and limited public access; acquisition pending | 2026-09-04 | [Detailed record](evidence/EL-002-dataset-research-access.md) | [Dataset research](research/dataset-research.md) | `929738d` |
 
 ## Evidence rules
 
