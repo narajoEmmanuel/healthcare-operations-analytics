@@ -1,0 +1,2 @@
+# No Python runtime dependencies are required for the documentation foundation.
+# Pin dependencies here when reproducible acquisition or validation code is added.

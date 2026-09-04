@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Virtual environments and secrets
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+secrets*.json
+
+# Jupyter
+.ipynb_checkpoints/
+
+# PostgreSQL and local database artifacts
+*.sql.dump
+*.dump
+*.backup
+*.sqlite
+*.sqlite3
+pgdata/
+
+# Power BI local and temporary artifacts
+*.pbix.tmp
+*.pbit.tmp
+*.pbids
+.pbi/
+
+# Editors and operating systems
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs, caches, and generated outputs
+*.log
+.cache/
+data/processed/*
+!data/processed/.gitkeep
+
+# Raw data policy: documentation is versioned; acquired data is ignored by
+# default. A small public source file may be force-added only after provenance,
+# source terms, size, dimensions, and SHA-256 are recorded.
+data/raw/*
+!data/raw/.gitkeep
