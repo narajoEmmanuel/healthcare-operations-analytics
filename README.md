@@ -1,23 +1,21 @@
 # Healthcare Operations Analytics Platform
 
-An independent portfolio project using public CMS data to demonstrate a reproducible analytics workflow: business requirements, PostgreSQL modeling, SQL analysis, data quality, KPI design, and Power BI communication.
+An independent analysis of inpatient service-line performance and Medicare payment variation using public CMS data.
 
-**Status:** Hiring and dataset research are complete, including unauthenticated record-level access verification. The business problem and analytical questions have not yet been defined; no findings or dashboard exist.
+**Status:** The primary data source and record-level access are verified. The business problem is being defined; data acquisition, analysis, and dashboard development have not started.
 
 ## Data source
 
-The selected primary source is CMS's *Medicare Inpatient Hospitals — by Provider and Service*. The provisional period is 2019–2024, subject to acquisition and comparability checks. Selection rationale, API verification, and limitations are documented in [`research/market_and_dataset_research.md`](research/market_and_dataset_research.md).
+The primary source is CMS's *Medicare Inpatient Hospitals — by Provider and Service*, provisionally covering 2019–2024. Dataset grain, variables, payment context, access verification, and analytical limitations are documented in [`research/domain_and_data.md`](research/domain_and_data.md).
 
-## Intended stack
+## Planned stack
 
 PostgreSQL, SQL, Python, pandas, Power Query, Power BI, DAX, Git, and GitHub.
 
 ## Repository navigation
 
-- [`research/business_case.md`](research/business_case.md): business problem, stakeholders, objectives, scope, and analytical questions
-- [`research/market_and_dataset_research.md`](research/market_and_dataset_research.md): hiring requirements, dataset selection, access verification, and sources
-- [`research/project_log.md`](research/project_log.md): concise record of completed work and supporting commits
+- [`research/domain_and_data.md`](research/domain_and_data.md): CMS inpatient data, MS-DRG and IPPS context, payment variables, and limitations
 - [`data/README.md`](data/README.md): acquisition provenance and raw-data controls
 - `sql/`, `python/`, `powerbi/`, `assets/`, and `report/`: implementation artifacts when work begins
 
-Only inspected outputs will support project or CV claims. Source datasets retain their original publisher terms and are not relicensed by this repository.
+Source datasets retain their original publisher terms and are not relicensed by this repository.
