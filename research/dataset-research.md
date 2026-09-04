@@ -22,7 +22,7 @@ CMS provides official public-use data, a documented data dictionary and methodol
 
 **Medicare Inpatient Hospitals — by Provider and Service** is the working primary dataset. CMS describes it as Original Medicare fee-for-service Part A inpatient discharge information for IPPS hospitals, aggregated by provider and MS-DRG. On September 4, 2026, the official page listed annual files for 2019 through 2024 and identified 2024 as latest available.
 
-Candidate fields documented by CMS include rendering provider CCN and name, provider geography, DRG code/description, total discharges, average submitted charges, average total payments, and average Medicare payments. Exact schemas will be profiled by year before modeling.
+The latest primary API returned the following field names in a two-record access test: `Rndrng_Prvdr_CCN`, `Rndrng_Prvdr_Org_Name`, `Rndrng_Prvdr_City`, `Rndrng_Prvdr_St`, `Rndrng_Prvdr_State_FIPS`, `Rndrng_Prvdr_Zip5`, `Rndrng_Prvdr_State_Abrvtn`, `Rndrng_Prvdr_RUCA`, `Rndrng_Prvdr_RUCA_Desc`, `DRG_Cd`, `DRG_Desc`, `Tot_Dschrgs`, `Avg_Submtd_Cvrd_Chrg`, `Avg_Tot_Pymt_Amt`, and `Avg_Mdcr_Pymt_Amt`. Exact schemas will still be profiled by year before modeling.
 
 ## Potential supporting datasets
 
@@ -30,7 +30,7 @@ Candidate fields documented by CMS include rendering provider CCN and name, prov
 2. **Hospital Readmissions Reduction Program:** candidate performance context, only if an approved question requires readmission measures or payment-reduction context.
 3. **Hospital Value-Based Purchasing / Total Performance Score:** candidate quality/payment-program context, only if an approved question requires it.
 
-Only Hospital General Information received a record-level API test in this phase. Readmissions and value-based purchasing pages/data remain untested and are not in the committed scope.
+The primary dataset and Hospital General Information received record-level API access tests in this phase. Readmissions and value-based purchasing pages/data remain untested and are not in the committed scope.
 
 ## Analytical suitability
 
@@ -59,6 +59,10 @@ Only Hospital General Information received a record-level API test in this phase
 
 ## Public access
 
-The primary dataset landing page, data dictionary, and API documentation were publicly reachable without an account. The Hospital General Information metadata endpoint and record API returned JSON without authentication. No complete project datasets were downloaded or accepted into the repository during this phase.
+The primary dataset landing page, data dictionary, and API documentation were publicly reachable without an account. On September 4, 2026, CMS's Access API dialog identified the latest endpoint as:
+
+`https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data`
+
+An unauthenticated request to that endpoint with `?size=2` returned HTTP 200, `application/json`, and exactly two records. The response was inspected in memory and was not saved as analytical project data. The Hospital General Information metadata endpoint and record API also returned JSON without authentication. No complete project datasets were downloaded or accepted into the repository during this phase.
 
 See [`references.md`](references.md) for official sources and [`../evidence/EL-002-dataset-research-access.md`](../evidence/EL-002-dataset-research-access.md) for the exact verification record.
