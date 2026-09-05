@@ -46,16 +46,7 @@ Under IPPS, each case is assigned to a DRG with a relative weight based on the a
 
 ## Relevant variables
 
-| Variable | Analytical role |
-| --- | --- |
-| `Rndrng_Prvdr_CCN` | CMS Certification Number identifying the hospital provider |
-| `Rndrng_Prvdr_Org_Name` | Provider name |
-| `Rndrng_Prvdr_State_Abrvtn`, `Rndrng_Prvdr_RUCA_Desc` | Geographic and rural/urban context |
-| `DRG_Cd`, `DRG_Desc` | Inpatient service classification and description |
-| `Tot_Dschrgs` | Published discharge volume for the provider/MS-DRG combination |
-| `Avg_Submtd_Cvrd_Chrg` | Average submitted covered charge |
-| `Avg_Tot_Pymt_Amt` | Average total payment |
-| `Avg_Mdcr_Pymt_Amt` | Average amount paid by Medicare |
+The dataset contains provider identifiers and location attributes, MS-DRG classifications, discharge volume, and three distinct monetary measures. The complete variable-level interpretation and proposed analytical treatment are maintained in the [`Analytical Data Dictionary`](data_dictionary.md).
 
 ### Payment variables
 
