@@ -19,6 +19,7 @@ PostgreSQL, SQL, Python, pandas, Power Query, Power BI, DAX, Git, and GitHub.
 - [`research/business_case.md`](research/business_case.md): business decision, stakeholders, analytical objectives, scope, and decision boundaries
 - [`research/domain_and_data.md`](research/domain_and_data.md): CMS inpatient data, MS-DRG and IPPS context, payment variables, and limitations
 - [`research/data_dictionary.md`](research/data_dictionary.md): narrative definitions and analytical treatment of the source variables
+- [`python/data_dictionary_analysis.ipynb`](python/data_dictionary_analysis.ipynb): executable schema reconciliation and variable profiling against a limited CMS API sample
 - [`data/README.md`](data/README.md): acquisition provenance and raw-data controls
 - `sql/`, `python/`, `powerbi/`, `assets/`, and `report/`: implementation artifacts when work begins
 

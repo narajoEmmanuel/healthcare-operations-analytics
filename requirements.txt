@@ -1,2 +1,2 @@
-# No Python runtime dependencies are required for the documentation foundation.
-# Pin dependencies here when reproducible acquisition or validation code is added.
+pandas>=2.2,<3.1
+jupyterlab>=4.2,<5.0
