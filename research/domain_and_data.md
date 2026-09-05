@@ -48,6 +48,8 @@ Under IPPS, each case is assigned to a DRG with a relative weight based on the a
 
 The dataset contains provider identifiers and location attributes, MS-DRG classifications, discharge volume, and three distinct monetary measures. The complete variable-level interpretation and proposed analytical treatment are maintained in the [`Analytical Data Dictionary`](data_dictionary.md).
 
+The evolving data-understanding process—including variable inspection, dimension and measure roles, the candidate row grain, and primary-key validation—is recorded in the [`Python data-understanding notebook`](../python/data_dictionary_analysis.ipynb).
+
 ### Payment variables
 
 - **Submitted covered charge (`Avg_Submtd_Cvrd_Chrg`):** the provider's average charge for Medicare-covered services in the DRG. It is not the amount paid and does not represent the provider's cost.
