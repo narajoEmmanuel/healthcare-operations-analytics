@@ -8,6 +8,8 @@ An independent analysis of inpatient service-line performance and Medicare payme
 
 The primary source is CMS's *Medicare Inpatient Hospitals — by Provider and Service*, provisionally covering 2019–2024. Dataset grain, variables, payment context, access verification, and analytical limitations are documented in [`research/domain_and_data.md`](research/domain_and_data.md).
 
+**Data provenance:** Official CMS Data → Medicare Inpatient Hospitals → Provider and Service → Public Data API. See the documented [discovery path](research/domain_and_data.md#data-source-discovery-path).
+
 ## Planned stack
 
 PostgreSQL, SQL, Python, pandas, Power Query, Power BI, DAX, Git, and GitHub.

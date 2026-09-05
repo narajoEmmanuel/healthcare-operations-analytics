@@ -12,6 +12,32 @@
 
 The [latest record API](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data?size=2) returned two requested JSON records with HTTP 200. The sample was inspected in memory and not retained as project data. Full downloads, local dimensions, filenames, file sizes, checksums, and cross-year consistency remain unverified.
 
+## Data Source Discovery Path
+
+The primary dataset was identified directly through the official CMS Data portal rather than through a third-party repository.
+
+**Navigation path**
+
+```text
+CMS Data
+→ Provider Summary by Type of Service
+→ Medicare Inpatient Hospitals
+→ Medicare Inpatient Hospitals, by Provider and Service
+→ Access API
+→ 2024 dataset
+→ Official CMS Data API endpoint
+```
+
+**Why this dataset**
+
+The provider-and-service level was selected because the analysis requires both hospital-level identification and inpatient service categories represented by DRGs. This granularity supports comparisons of discharge volume and Medicare payment patterns for the same type of hospitalization across hospitals.
+
+**Official dataset page:** [Medicare Inpatient Hospitals — by Provider and Service](https://data.cms.gov/provider-summary-by-type-of-service/medicare-inpatient-hospitals/medicare-inpatient-hospitals-by-provider-and-service)
+
+**API endpoint used:** [Official CMS Data API endpoint](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data)
+
+The endpoint was first tested with `size=2` before any full acquisition was attempted. The API provides a reproducible programmatic path from CMS to the analytical workflow and supports HTTP requests, JSON handling, pagination, validation, and automated ingestion.
+
 ## Medicare and MS-DRG context
 
 An MS-DRG classifies an inpatient case using factors including diagnoses, procedures, complicating conditions, age, sex, and discharge status. The groups are intended to combine clinically coherent cases with similar expected hospital resource use.
