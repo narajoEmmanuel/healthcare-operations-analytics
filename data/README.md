@@ -1,13 +1,15 @@
 # Data Provenance
 
-No project dataset has been acquired. When acquisition begins, raw files will be preserved unchanged and derived files will be written separately. Large data files remain ignored by default; credentials and protected data must never be committed.
+## Dataset
 
-Each acquired version must have a measured manifest entry:
+**CMS Medicare Inpatient Hospitals, by Provider and Service**
 
-| Dataset | Official source and URL | Access date | Raw filename | Rows | Columns | File size | SHA-256 | Access notes |
-| --- | --- | --- | --- | ---: | ---: | ---: | --- | --- |
-| _Pending acquisition_ |  |  |  |  |  |  |  |  |
+- Reporting year: 2024
+- Source: Centers for Medicare & Medicaid Services
+- Official dataset: [Medicare Inpatient Hospitals, by Provider and Service](https://data.cms.gov/provider-summary-by-type-of-service/medicare-inpatient-hospitals/medicare-inpatient-hospitals-by-provider-and-service)
+- Acquisition method: [CMS Data API](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data)
+- Local raw file: `data/raw/medicare_inpatient_2024.json`
+- Rows validated: 145,879
+- Columns validated: 15
 
-Values will be recorded only after inspection. Validation will cover download integrity, encoding, delimiter, schema, dimensions, checksum, and preservation of text identifiers such as zero-padded CMS Certification Numbers.
-
-Source data remain subject to publisher terms; the repository's MIT License does not replace them.
+The raw file is intentionally excluded from Git. It can be reproduced using the documented API acquisition workflow in `python/01_data_understanding.ipynb`.

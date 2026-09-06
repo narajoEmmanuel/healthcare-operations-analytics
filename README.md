@@ -2,7 +2,7 @@
 
 An independent analysis of inpatient service-line performance and Medicare payment variation using public CMS data.
 
-**Status:** The business decision, analytical objectives, and scope are defined. The primary data source and record-level access are verified; data acquisition, analysis, and dashboard development have not started.
+**Status:** The business decision, analytical objectives, and scope are defined. The complete 2024 source dataset has been retrieved and validated, and its reproducible raw snapshot is ready for data profiling.
 
 ## Data source
 
@@ -19,8 +19,10 @@ PostgreSQL, SQL, Python, pandas, Power Query, Power BI, DAX, Git, and GitHub.
 - [`research/business_case.md`](research/business_case.md): business decision, stakeholders, analytical objectives, scope, and decision boundaries
 - [`research/domain_and_data.md`](research/domain_and_data.md): CMS inpatient data, MS-DRG and IPPS context, payment variables, and limitations
 - [`research/data_dictionary.md`](research/data_dictionary.md): narrative definitions and analytical treatment of the source variables
+- [`python/00_api_source_probe.py`](python/00_api_source_probe.py): initial technical interaction with the CMS Data API
 - [`python/01_data_understanding.ipynb`](python/01_data_understanding.ipynb): documents API exploration, variable interpretation, dataset retrieval validation, and candidate-key validation
-- [`data/README.md`](data/README.md): acquisition provenance and raw-data controls
+- [`data/README.md`](data/README.md): acquisition provenance and the ignored raw snapshot handoff
+- [`python/02_data_profiling.ipynb`](python/02_data_profiling.ipynb): loads and validates the raw snapshot before interactive profiling
 - `sql/`, `python/`, `powerbi/`, `assets/`, and `report/`: implementation artifacts when work begins
 
 Source datasets retain their original publisher terms and are not relicensed by this repository.

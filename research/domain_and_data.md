@@ -10,7 +10,7 @@
 | Provisional period | 2019–2024, subject to schema and comparability checks |
 | Access status | Public landing page, documentation, download options, and unauthenticated record API verified on September 4, 2026 |
 
-The [latest record API](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data?size=2) returned two requested JSON records with HTTP 200. The sample was inspected in memory and not retained as project data. Full downloads, local dimensions, filenames, file sizes, checksums, and cross-year consistency remain unverified.
+The [record API](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data?size=2) returned the requested JSON records with HTTP 200. The complete 2024 response was subsequently retrieved and validated at 145,879 rows and 15 columns. Its reproducible raw snapshot is documented in [`data/README.md`](../data/README.md) and excluded from Git.
 
 ## Data Source Discovery Path
 
