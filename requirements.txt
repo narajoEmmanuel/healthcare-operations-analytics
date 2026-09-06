@@ -1,2 +1,37 @@
+# cSpell:disable
+# Notebooks
 jupyterlab>=4.2,<5.0
+ipykernel>=6.29
+
+# Data analysis
 pandas>=2.2,<3.0
+numpy>=2.0
+scipy>=1.14
+statsmodels>=0.14
+scikit-learn>=1.5
+
+# Visualization
+matplotlib>=3.9
+plotly>=5.24
+
+# Data formats / Excel
+openpyxl>=3.1
+xlsxwriter>=3.2
+pyarrow>=17.0
+
+# SQL
+sqlalchemy>=2.0
+duckdb>=1.1
+psycopg[binary]>=3.2
+pymysql>=1.1
+pyodbc>=5.1
+
+# APIs / web
+requests>=2.32,<3.0
+beautifulsoup4>=4.12
+lxml>=5.3
+
+# Utilities
+python-dotenv>=1.0
+tqdm>=4.66
+tabulate>=0.9
