@@ -25,13 +25,16 @@ secrets*.json
 # Jupyter
 .ipynb_checkpoints/
 
-# PostgreSQL and local database artifacts
+# Local database and infrastructure state
 *.sql.dump
 *.dump
 *.backup
 *.sqlite
 *.sqlite3
 pgdata/
+postgres-data/
+.azurite/
+azurite-data/
 
 # Power BI local and temporary artifacts
 *.pbix.tmp
@@ -49,10 +52,9 @@ pgdata/
 Thumbs.db
 Desktop.ini
 
-# Logs, caches, and generated outputs
+# Logs, caches, and local data artifacts
 *.log
 .cache/
-data/processed/*
-
-# Reproducible public raw data
-data/raw/medicare_inpatient_2024.json
+data/raw/
+data/processed/
+data/tmp/

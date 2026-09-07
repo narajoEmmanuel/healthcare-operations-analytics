@@ -1,16 +1,19 @@
 # Domain and Data
 
-## CMS inpatient dataset
+## Official CMS dataset
 
-| Item | Current understanding |
+| Item | Validated understanding |
 | --- | --- |
-| Official source | [Medicare Inpatient Hospitals — by Provider and Service](https://data.cms.gov/provider-summary-by-type-of-service/medicare-inpatient-hospitals/medicare-inpatient-hospitals-by-provider-and-service) |
+| Dataset | [Medicare Inpatient Hospitals — by Provider and Service](https://data.cms.gov/provider-summary-by-type-of-service/medicare-inpatient-hospitals/medicare-inpatient-hospitals-by-provider-and-service) |
+| Reporting year | 2024 |
 | Population | Original Medicare fee-for-service Part A discharges from hospitals paid under the Inpatient Prospective Payment System (IPPS) |
-| Published grain | Provider and Medicare Severity Diagnosis Related Group (MS-DRG); exact uniqueness will be tested after acquisition |
-| Provisional period | 2019–2024, subject to schema and comparability checks |
-| Access status | Public landing page, documentation, download options, and unauthenticated record API verified on September 4, 2026 |
+| API endpoint | [CMS Data API](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data) |
+| Official definitions | [CMS Data Dictionary](https://data.cms.gov/resources/medicare-inpatient-hospitals-by-provider-and-service-data-dictionary-0) |
+| Complete retrieved shape | 145,879 rows × 15 columns |
+| Validated row grain | One provider + one DRG per row for the selected reporting year |
+| Validated natural candidate key | `Rndrng_Prvdr_CCN + DRG_Cd` |
 
-The [record API](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data?size=2) returned the requested JSON records with HTTP 200. The complete 2024 response was subsequently retrieved and validated at 145,879 rows and 15 columns. Its reproducible raw snapshot is documented in [`data/README.md`](../data/README.md) and excluded from Git.
+The complete retrieval contained 145,879 distinct provider-DRG combinations and zero duplicated combinations. This validates the pair as a natural candidate key for the retrieved 2024 source dataset; it is not yet a PostgreSQL primary-key design decision.
 
 ## Data Source Discovery Path
 
@@ -36,7 +39,11 @@ The provider-and-service level was selected because the analysis requires both h
 
 **API endpoint used:** [Official CMS Data API endpoint](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data)
 
-The endpoint was first tested with `size=2` before any full acquisition was attempted. The API provides a reproducible programmatic path from CMS to the analytical workflow and supports HTTP requests, JSON handling, pagination, validation, and automated ingestion.
+## Data Understanding workflow
+
+The endpoint was first tested with a very small request. The user then reviewed the returned variables and official Data Dictionary, separated dimensions from measures, proposed the provider-DRG grain and candidate key, learned pagination, retrieved the complete 2024 dataset, validated the row count, and tested candidate-key uniqueness.
+
+The executed [`Data Understanding notebook`](../notebooks/01_data_understanding.ipynb) preserves the detailed workflow and outputs. A raw JSON created during that experimentation remains a temporary, ignored local artifact; it is not the project's authoritative raw-layer architecture and must not be committed.
 
 ## Medicare and MS-DRG context
 
@@ -47,8 +54,6 @@ Under IPPS, each case is assigned to a DRG with a relative weight based on the a
 ## Relevant variables
 
 The dataset contains provider identifiers and location attributes, MS-DRG classifications, discharge volume, and three distinct monetary measures. The complete variable-level interpretation and proposed analytical treatment are maintained in the [`Analytical Data Dictionary`](data_dictionary.md).
-
-The evolving data-understanding process—including variable inspection, dimension and measure roles, the candidate row grain, and primary-key validation—is recorded in the [`Python data-understanding notebook`](../python/01_data_understanding.ipynb).
 
 ### Payment variables
 
