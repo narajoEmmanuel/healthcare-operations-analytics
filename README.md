@@ -83,9 +83,11 @@ Only folders containing current artifacts are shown. `sql/`, `powerbi/`, `report
 - [`research/domain_and_data.md`](research/domain_and_data.md): official CMS source, discovery path, provenance, validated understanding, and limitations
 - [`research/data_dictionary.md`](research/data_dictionary.md): source-variable interpretation and intended analytical treatment
 - [`python/ingestion/00_api_source_probe.py`](python/ingestion/00_api_source_probe.py): compact first direct interaction with the CMS API
+- [`python/storage/list_raw_blobs.py`](python/storage/list_raw_blobs.py): Azurite exercise that lists `raw`, writes safe source metadata, and queries the blob's technical properties without downloading its contents
 - [`notebooks/01_data_understanding.ipynb`](notebooks/01_data_understanding.ipynb): completed and executed Data Understanding workflow
 - [`notebooks/02_data_profiling.ipynb`](notebooks/02_data_profiling.ipynb): purpose and questions reserved for the next interactive analytical stage
 - [`docs/docker-basics.md`](docs/docker-basics.md): beginner-friendly, executed walkthrough covering Docker, Azurite, persistent storage, Storage Explorer, the `raw` blob container, and the first uploaded blob
+- [`docs/python-azurite-basics.md`](docs/python-azurite-basics.md): beginner-friendly explanation of connecting Python to Azurite, listing blobs, and reading blob properties without downloading the JSON
 
 ## Run the current learning artifacts
 
