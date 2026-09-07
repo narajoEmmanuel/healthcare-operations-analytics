@@ -2,40 +2,49 @@
 
 **Hospital benchmarking using public CMS data**
 
-This portfolio project supports Hospital Strategy & Finance Leadership in screening Medicare inpatient service categories for deeper review based on activity volume, payment contribution, and payment variation relative to comparable hospitals. It is a benchmarking tool, not a profitability, cost, efficiency, reimbursement-appropriateness, or causal model.
+This learning-driven portfolio project is developing a reproducible analytics workflow for Medicare inpatient service and payment benchmarking. It is designed to support **Hospital Strategy & Finance Leadership** in answering:
+
+> Which Medicare inpatient service categories should be prioritized for deeper financial and performance review based on their activity volume, payment contribution, and payment variation relative to comparable hospitals?
+
+The project is a screening and benchmarking tool. It does not determine profitability, actual hospital costs, operational efficiency, reimbursement appropriateness, staffing needs, patient outcomes, or the causes of payment differences.
 
 ## Data source
 
-The project uses the 2024 [Medicare Inpatient Hospitals — by Provider and Service](https://data.cms.gov/provider-summary-by-type-of-service/medicare-inpatient-hospitals/medicare-inpatient-hospitals-by-provider-and-service) dataset from CMS. The complete API retrieval contains 145,879 rows and 15 columns. Source discovery, provenance, grain, candidate-key validation, and limitations are summarized in [`research/domain_and_data.md`](research/domain_and_data.md).
+The analysis uses the 2024 CMS [Medicare Inpatient Hospitals — by Provider and Service](https://data.cms.gov/provider-summary-by-type-of-service/medicare-inpatient-hospitals/medicare-inpatient-hospitals-by-provider-and-service) dataset, accessed through the public [CMS Data API](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data).
 
-## Current status
+Validated source facts:
 
-### Implemented
+- 145,879 rows and 15 columns retrieved
+- one provider + one DRG per row for the selected reporting year
+- 145,879 unique `Rndrng_Prvdr_CCN + DRG_Cd` combinations
+- zero duplicated provider-DRG combinations
 
-- official CMS source and Data Dictionary review
-- small-sample CMS API exploration
-- complete 2024 API retrieval and retrieval validation
-- Data Understanding, including dimension and measure interpretation
-- validation of one provider + one DRG per row for the selected reporting year
-- validation that `Rndrng_Prvdr_CCN + DRG_Cd` is unique across all 145,879 retrieved rows
+The provider CCN and DRG code therefore form a validated natural candidate key for the retrieved 2024 dataset. This is not yet a PostgreSQL primary-key design decision. Source discovery, provenance, definitions, and limitations are documented in [`research/domain_and_data.md`](research/domain_and_data.md).
 
-### Planned
+## Project status
 
-- local Azure Storage emulation with Azurite as the raw object-storage layer
-- reusable Python ingestion and ingestion metadata
-- interactive Data Profiling and validation
-- PostgreSQL staging and analytics layers
-- SQL transformations and analytical models
-- Power BI Desktop reporting
+| Area | Technology or artifact | Status |
+| --- | --- | --- |
+| Source discovery | CMS Data Portal and official Data Dictionary | Completed |
+| API exploration | Python and HTTP GET | Completed |
+| Full acquisition | Paginated CMS Data API retrieval | Completed and validated |
+| Data Understanding | Executed Jupyter notebook | Completed |
+| Local container runtime | Docker Desktop with WSL 2 | Installed and validated locally |
+| Raw object storage | Azurite Blob Storage | Planned; not configured |
+| Reusable ingestion | Python ingestion pipeline and metadata | Planned; not implemented |
+| Data Profiling | Jupyter notebook | Questions defined; analysis not started |
+| Relational storage | PostgreSQL staging and analytics layers | Planned; not configured |
+| Analytics | SQL transformations and models | Planned; not implemented |
+| Reporting | Power BI Desktop | Planned; not connected |
 
-Planned components have not been implemented. In particular, this repository does not represent an Azure cloud deployment.
+Docker Desktop is available as the future local infrastructure runtime and has passed the standard `hello-world` test. No containers, Compose configuration, Azurite service, PostgreSQL service, or persistent infrastructure volumes have been created for this project yet.
 
-## Target pipeline
+## Target architecture
 
 ```text
 CMS Data API
 → Python ingestion
-→ Azurite Blob Storage (local emulation)
+→ Azurite Blob Storage (local Azure Storage emulation)
 → Python profiling / validation
 → PostgreSQL staging
 → SQL transformations
@@ -43,14 +52,64 @@ CMS Data API
 → Power BI Desktop
 ```
 
-## Repository organization
+Azurite will emulate Azure Blob Storage locally to support object-storage learning without cloud billing. This project must not be represented as an Azure cloud deployment or production Azure experience.
 
-- [`research/business_case.md`](research/business_case.md): business decision, stakeholders, objectives, scope, and decision boundaries
-- [`research/domain_and_data.md`](research/domain_and_data.md): CMS source, discovery path, validated understanding, provenance, and limitations
+## Repository structure
+
+```text
+healthcare-operations-analytics/
+├── README.md
+├── LICENSE
+├── requirements.txt
+├── research/
+│   ├── business_case.md
+│   ├── domain_and_data.md
+│   └── data_dictionary.md
+├── notebooks/
+│   ├── 01_data_understanding.ipynb
+│   └── 02_data_profiling.ipynb
+└── python/
+    └── ingestion/
+        └── 00_api_source_probe.py
+```
+
+Only folders containing current artifacts are shown. `sql/`, `powerbi/`, `report/`, and `assets/` will be added when their corresponding work begins. Raw datasets, local storage state, database volumes, credentials, and private connection strings are excluded from Git.
+
+## Current artifacts
+
+- [`research/business_case.md`](research/business_case.md): business decision, stakeholders, analytical objectives, scope, and decision boundaries
+- [`research/domain_and_data.md`](research/domain_and_data.md): official CMS source, discovery path, provenance, validated understanding, and limitations
 - [`research/data_dictionary.md`](research/data_dictionary.md): source-variable interpretation and intended analytical treatment
-- [`python/ingestion/00_api_source_probe.py`](python/ingestion/00_api_source_probe.py): compact first interaction with the CMS API
-- [`notebooks/01_data_understanding.ipynb`](notebooks/01_data_understanding.ipynb): completed and executed Data Understanding work
-- [`notebooks/02_data_profiling.ipynb`](notebooks/02_data_profiling.ipynb): profiling purpose and questions for the next interactive analysis stage
-- `sql/`, `powerbi/`, `report/`, and `assets/`: future implementation areas, created only when needed
+- [`python/ingestion/00_api_source_probe.py`](python/ingestion/00_api_source_probe.py): compact first direct interaction with the CMS API
+- [`notebooks/01_data_understanding.ipynb`](notebooks/01_data_understanding.ipynb): completed and executed Data Understanding workflow
+- [`notebooks/02_data_profiling.ipynb`](notebooks/02_data_profiling.ipynb): purpose and questions reserved for the next interactive analytical stage
+
+## Run the current learning artifacts
+
+Create and activate a Python virtual environment, then install the current dependencies:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+```
+
+Run the small API probe:
+
+```powershell
+python python/ingestion/00_api_source_probe.py
+```
+
+Open the notebooks:
+
+```powershell
+jupyter lab
+```
+
+The Data Understanding notebook contains the completed acquisition evidence and executed validation outputs. The Data Profiling notebook should not be executed or extended until the object-storage and ingestion milestones are understood and completed.
+
+## Next milestone
+
+Learn and verify the concepts of **object storage, storage account, blob container, and blob**, followed by Docker fundamentals—**image, container, port, and volume**—before starting Azurite manually.
 
 Source datasets retain their original publisher terms and are not relicensed by this repository.
