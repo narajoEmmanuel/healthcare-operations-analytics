@@ -8,6 +8,7 @@
 | Reporting year | 2024 |
 | Population | Original Medicare fee-for-service Part A discharges from hospitals paid under the Inpatient Prospective Payment System (IPPS) |
 | API endpoint | [CMS Data API](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data) |
+| API stats endpoint | [CMS Data API stats](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data/stats) |
 | Official definitions | [CMS Data Dictionary](https://data.cms.gov/resources/medicare-inpatient-hospitals-by-provider-and-service-data-dictionary-0) |
 | Complete retrieved shape | 145,879 rows × 15 columns |
 | Validated row grain | One provider + one DRG per row for the selected reporting year |
@@ -43,7 +44,7 @@ The provider-and-service level was selected because the analysis requires both h
 
 The endpoint was first tested with a very small request. The user then reviewed the returned variables and official Data Dictionary, separated dimensions from measures, proposed the provider-DRG grain and candidate key, learned pagination, retrieved the complete 2024 dataset, validated the row count, and tested candidate-key uniqueness.
 
-The executed [`Data Understanding notebook`](../notebooks/01_data_understanding.ipynb) preserves the detailed workflow and outputs. A raw JSON created during that experimentation remains a temporary, ignored local artifact; it is not the project's authoritative raw-layer architecture and must not be committed.
+The executed [`Data Understanding notebook`](../notebooks/01_data_understanding.ipynb) preserves the detailed workflow and outputs. The reproducible ingestion now publishes a validated, checksummed snapshot to Azurite; that Blob is the authoritative raw layer. Any local JSON created during experimentation remains temporary and ignored.
 
 ## Medicare and MS-DRG context
 

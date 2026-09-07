@@ -18,43 +18,20 @@ blob_service_client = BlobServiceClient.from_connection_string(
 
 container_client = blob_service_client.get_container_client("raw")
 
-print("Blobs in the raw container:")
+print("Blobs in the raw container (read-only):")
 
-# This asks Azurite which objects exist in "raw".
-# It does not open the JSON file from this computer's disk.
-for blob in container_client.list_blobs():
-    print(blob.name)
-
-
-# Point to one existing blob, then ask Azurite for its technical properties.
-# get_blob_properties() does not download the blob's JSON content.
-blob_client = container_client.get_blob_client(
-    "medicare_inpatient_2024.json"
-)
-
-properties = blob_client.get_blob_properties()
-
-metadata = {
-    "source": "cms",
-    "reporting_year": "2024",
-    "dataset": "medicare_inpatient_by_provider_and_service",
-}
-
-blob_client.set_blob_metadata(metadata)
-
-updated_properties = blob_client.get_blob_properties()
-
-print("\nUser-defined metadata:")
-
-for key, value in updated_properties.metadata.items():
-    print(f"{key}: {value}")
-
-print("\nBlob properties:")
-print(f"Name: {blob_client.blob_name}")
-print(f"Size: {updated_properties.size} bytes")
-print(
-    "Content type: "
-    f"{updated_properties.content_settings.content_type}"
-)
-print(f"Last modified: {updated_properties.last_modified}")
-print(f"ETag: {updated_properties.etag}")
+# Listing and property retrieval do not download or modify blob contents.
+for item in container_client.list_blobs(include=["metadata"]):
+    blob_client = container_client.get_blob_client(item.name)
+    properties = blob_client.get_blob_properties()
+    print(f"\nName: {item.name}")
+    print(f"Size: {properties.size} bytes")
+    print(f"Content type: {properties.content_settings.content_type}")
+    print(f"Last modified: {properties.last_modified}")
+    print(f"ETag (version identifier, not a content checksum): {properties.etag}")
+    print("Metadata:")
+    if properties.metadata:
+        for key, value in sorted(properties.metadata.items()):
+            print(f"  {key}: {value}")
+    else:
+        print("  (none)")

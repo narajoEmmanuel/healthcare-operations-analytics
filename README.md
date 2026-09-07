@@ -2,119 +2,99 @@
 
 **Hospital benchmarking using public CMS data**
 
-This learning-driven portfolio project is developing a reproducible analytics workflow for Medicare inpatient service and payment benchmarking. It is designed to support **Hospital Strategy & Finance Leadership** in answering:
+## Business Problem
 
-> Which Medicare inpatient service categories should be prioritized for deeper financial and performance review based on their activity volume, payment contribution, and payment variation relative to comparable hospitals?
+This local screening system helps **Hospital Strategy & Finance Leadership** decide which Medicare inpatient service categories warrant deeper review based on activity, estimated payment exposure, and payment variation for the same DRG. It does not determine profitability, internal cost, operational efficiency, reimbursement appropriateness, staffing, patient outcomes, or causes of payment differences.
 
-The project is a screening and benchmarking tool. It does not determine profitability, actual hospital costs, operational efficiency, reimbursement appropriateness, staffing needs, patient outcomes, or the causes of payment differences.
-
-## Data source
-
-The analysis uses the 2024 CMS [Medicare Inpatient Hospitals — by Provider and Service](https://data.cms.gov/provider-summary-by-type-of-service/medicare-inpatient-hospitals/medicare-inpatient-hospitals-by-provider-and-service) dataset, accessed through the public [CMS Data API](https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data).
-
-Validated source facts:
-
-- 145,879 rows and 15 columns retrieved
-- one provider + one DRG per row for the selected reporting year
-- 145,879 unique `Rndrng_Prvdr_CCN + DRG_Cd` combinations
-- zero duplicated provider-DRG combinations
-
-The provider CCN and DRG code therefore form a validated natural candidate key for the retrieved 2024 dataset. This is not yet a PostgreSQL primary-key design decision. Source discovery, provenance, definitions, and limitations are documented in [`research/domain_and_data.md`](research/domain_and_data.md).
-
-## Project status
-
-| Area | Technology or artifact | Status |
-| --- | --- | --- |
-| Source discovery | CMS Data Portal and official Data Dictionary | Completed |
-| API exploration | Python and HTTP GET | Completed |
-| Full acquisition | Paginated CMS Data API retrieval | Completed and validated |
-| Data Understanding | Executed Jupyter notebook | Completed |
-| Local container runtime | Docker Desktop with WSL 2 | Installed and validated locally |
-| Raw object storage | Azurite Blob Storage and Storage Explorer | Local service, persistent volume, `raw` blob container, and first JSON blob validated |
-| Reusable ingestion | Python ingestion pipeline and metadata | Planned; not implemented |
-| Data Profiling | Jupyter notebook | Questions defined; analysis not started |
-| Relational storage | PostgreSQL staging and analytics layers | Planned; not configured |
-| Analytics | SQL transformations and models | Planned; not implemented |
-| Reporting | Power BI Desktop | Planned; not connected |
-
-Docker Desktop is the local infrastructure runtime and has passed the standard `hello-world` test. The official Azurite image was inspected, a named volume (`healthcare_azurite_data`) was created, and the `healthcare-azurite` container was validated with its Blob endpoint bound locally at `http://127.0.0.1:10000`. Microsoft Azure Storage Explorer 1.45.0 was connected to the local emulator, the `raw` blob container was created, and `medicare_inpatient_2024.json` was uploaded and verified as the first local blob. No Compose configuration or PostgreSQL service has been created yet.
-
-## Target architecture
+## Architecture
 
 ```text
 CMS Data API
-→ Python ingestion
-→ Azurite Blob Storage (local Azure Storage emulation)
-→ Python profiling / validation
-→ PostgreSQL staging
-→ SQL transformations
-→ PostgreSQL analytics layer
-→ Power BI Desktop
+  -> Python ingestion and validation
+  -> Azurite Blob Storage (authoritative raw snapshot)
+  -> Python typed load
+  -> PostgreSQL staging
+  -> PostgreSQL star model and analytical views
+  -> Power BI-ready source
 ```
 
-Azurite will emulate Azure Blob Storage locally to support object-storage learning without cloud billing. This project must not be represented as an Azure cloud deployment or production Azure experience.
+Docker Compose runs Azurite Blob Storage on `127.0.0.1:10000` and PostgreSQL on `127.0.0.1:5432`, with persistent named volumes. No Azure subscription or paid cloud service is required.
 
-## Repository structure
+## Data Source
 
-```text
-healthcare-operations-analytics/
-├── README.md
-├── LICENSE
-├── requirements.txt
-├── docs/
-│   └── docker-basics.md
-├── research/
-│   ├── business_case.md
-│   ├── domain_and_data.md
-│   └── data_dictionary.md
-├── notebooks/
-│   ├── 01_data_understanding.ipynb
-│   └── 02_data_profiling.ipynb
-└── python/
-    └── ingestion/
-        └── 00_api_source_probe.py
-```
+The system uses the 2024 CMS [Medicare Inpatient Hospitals — by Provider and Service](https://data.cms.gov/provider-summary-by-type-of-service/medicare-inpatient-hospitals/medicare-inpatient-hospitals-by-provider-and-service) dataset and its [official data dictionary](https://data.cms.gov/resources/medicare-inpatient-hospitals-by-provider-and-service-data-dictionary-0). The verified snapshot contains 145,879 rows and 15 columns at one provider plus one DRG per row, with no duplicated `Rndrng_Prvdr_CCN + DRG_Cd` keys. Provenance and limitations are in [`research/domain_and_data.md`](research/domain_and_data.md).
 
-Only folders containing current artifacts are shown. `sql/`, `powerbi/`, `report/`, and `assets/` will be added when their corresponding work begins. Raw datasets, local storage state, database volumes, credentials, and private connection strings are excluded from Git.
+## Pipeline
 
-## Current artifacts
+The ingestion client obtains the expected count from the CMS stats endpoint, retrieves all pages at up to 5,000 rows, preserves source field names and strings, validates the shape and candidate key, computes SHA-256, and uploads JSON with operational metadata. The typed loader reads only from Azurite, verifies the checksum, replaces the selected year in staging inside a transaction, and builds analytics tables and views. Reruns do not append duplicates.
 
-- [`research/business_case.md`](research/business_case.md): business decision, stakeholders, analytical objectives, scope, and decision boundaries
-- [`research/domain_and_data.md`](research/domain_and_data.md): official CMS source, discovery path, provenance, validated understanding, and limitations
-- [`research/data_dictionary.md`](research/data_dictionary.md): source-variable interpretation and intended analytical treatment
-- [`python/ingestion/00_api_source_probe.py`](python/ingestion/00_api_source_probe.py): compact first direct interaction with the CMS API
-- [`python/storage/list_raw_blobs.py`](python/storage/list_raw_blobs.py): Azurite exercise that lists `raw`, writes safe source metadata, and queries the blob's technical properties without downloading its contents
-- [`notebooks/01_data_understanding.ipynb`](notebooks/01_data_understanding.ipynb): completed and executed Data Understanding workflow
-- [`notebooks/02_data_profiling.ipynb`](notebooks/02_data_profiling.ipynb): purpose and questions reserved for the next interactive analytical stage
-- [`docs/docker-basics.md`](docs/docker-basics.md): beginner-friendly, executed walkthrough covering Docker, Azurite, persistent storage, Storage Explorer, the `raw` blob container, and the first uploaded blob
-- [`docs/python-azurite-basics.md`](docs/python-azurite-basics.md): beginner-friendly explanation of connecting Python to Azurite, listing blobs, and reading blob properties without downloading the JSON
+## Analytical Model
 
-## Run the current learning artifacts
+- `staging.cms_inpatient`: typed source snapshot, keyed by year, provider CCN, and DRG code.
+- `analytics.dim_provider`: year-aware provider and geographic attributes.
+- `analytics.dim_drg`: year-aware DRG definitions.
+- `analytics.fact_inpatient_service`: one provider–DRG observation per year.
+- `analytics.v_portfolio_overview`: annual portfolio KPIs.
+- `analytics.v_drg_benchmark`: volume, estimated exposure, and same-DRG payment benchmarks.
+- `analytics.v_provider_drg_review_priority`: retained component measures and transparent review categories.
 
-Create and activate a Python virtual environment, then install the current dependencies:
+`Estimated Aggregate Total Payment` is `Total Discharges × Average Total Payment`. It is an estimate derived from aggregated source measures—not revenue, cost, margin, or profit. Geography and RUCA fields support contextual benchmarks, not fully matched hospital peer groups.
+
+## Reproduction
+
+Copy `.env.example` to `.env`, set a local PostgreSQL password, and insert the documented Azurite `devstoreaccount1` connection string already used by the local emulator.
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
+python -m pip install -r requirements-dev.txt
+.\scripts\preflight.ps1
+docker compose up -d --wait
+python python/run_pipeline.py
 ```
 
-Run the small API probe:
+The preflight detects a running legacy `healthcare-azurite` container, port conflicts, and whether `healthcare_azurite_data` will be reused. It never removes a container or volume. If the legacy container is running, stop—but do not remove—it before starting Compose.
+
+Each stage is independently runnable:
 
 ```powershell
-python python/ingestion/00_api_source_probe.py
+python python/ingestion/cms_inpatient_ingest.py
+python python/database/load_staging.py
+python python/database/build_analytics.py
+python python/storage/list_raw_blobs.py
+python -m pytest
+jupyter nbconvert --to notebook --execute notebooks/02_data_profiling.ipynb --inplace
 ```
 
-Open the notebooks:
+Run business queries with:
 
 ```powershell
-jupyter lab
+Get-Content -Raw sql/06_business_analysis.sql | docker compose exec -T postgres psql -U $env:POSTGRES_USER -d $env:POSTGRES_DB
 ```
 
-The Data Understanding notebook contains the completed acquisition evidence and executed validation outputs. The Data Profiling notebook should not be executed or extended until the object-storage and ingestion milestones are understood and completed.
+## Current Results
 
-## Next milestone
+The source facts already validated in the preserved Data Understanding notebook are 145,879 rows, 15 columns, 145,879 unique provider–DRG combinations, and zero duplicates. Runtime-generated checksum, blob, profiling, database, and analytical results are recorded only after their corresponding stage executes successfully; the ingestion manifest is created at `artifacts/ingestion_manifest.json`.
 
-Define the raw-object naming and metadata contract, then implement a small reusable Python upload step that reproduces the completed manual Storage Explorer workflow and validates the resulting blob properties. Automated infrastructure, Data Profiling, and PostgreSQL remain later milestones.
+## Limitations
 
-Source datasets retain their original publisher terms and are not relicensed by this repository.
+The source covers Original Medicare fee-for-service IPPS activity and suppresses provider/DRG combinations with 10 or fewer discharges. It is aggregated rather than patient-level. Payment differences can reflect geographic and institutional payment adjustments. Outputs identify potential outliers and review priorities; they do not establish causation or recommend expansion, closure, or corrective action.
+
+## Repository Structure
+
+```text
+docker-compose.yml             Local Azurite and PostgreSQL services
+python/ingestion/              CMS retrieval, validation, checksum, Blob upload
+python/database/               Typed staging load and analytics build
+python/storage/                Read-only Blob inspection
+python/run_pipeline.py         Lightweight orchestration
+sql/                           Schemas, model, transformations, checks, analysis
+notebooks/                     Preserved understanding and profiling workflows
+powerbi/README.md              Power BI connection and report specification
+research/                      Business case, provenance, and data dictionary
+scripts/preflight.ps1          Non-destructive collision and volume checks
+tests/                         Lightweight raw-validation tests
+```
+
+Raw datasets, secrets, temporary files, and Docker volume state are excluded from Git. No Power BI report or Azure cloud deployment is claimed.

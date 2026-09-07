@@ -1,0 +1,39 @@
+{
+  "dataset": "Medicare Inpatient Hospitals - by Provider and Service",
+  "dataset_id": "690ddc6c-2767-4618-b277-420ffb2bf27c",
+  "reporting_year": 2024,
+  "source_endpoint": "https://data.cms.gov/data-api/v1/dataset/690ddc6c-2767-4618-b277-420ffb2bf27c/data",
+  "retrieved_at_utc": "2026-09-07T22:38:12.691567+00:00",
+  "expected_rows": 145879,
+  "actual_rows": 145879,
+  "column_count": 15,
+  "columns": [
+    "Rndrng_Prvdr_CCN",
+    "Rndrng_Prvdr_Org_Name",
+    "Rndrng_Prvdr_City",
+    "Rndrng_Prvdr_St",
+    "Rndrng_Prvdr_State_FIPS",
+    "Rndrng_Prvdr_Zip5",
+    "Rndrng_Prvdr_State_Abrvtn",
+    "Rndrng_Prvdr_RUCA",
+    "Rndrng_Prvdr_RUCA_Desc",
+    "DRG_Cd",
+    "DRG_Desc",
+    "Tot_Dschrgs",
+    "Avg_Submtd_Cvrd_Chrg",
+    "Avg_Tot_Pymt_Amt",
+    "Avg_Mdcr_Pymt_Amt"
+  ],
+  "candidate_key": [
+    "Rndrng_Prvdr_CCN",
+    "DRG_Cd"
+  ],
+  "unique_candidate_keys": 145879,
+  "duplicate_candidate_keys": 0,
+  "sha256": "6f75fa54a4fc33bb3f1a510c2b6b58ed3b4ee91a4d55ce6d994bfd809a72c70f",
+  "blob_container": "raw",
+  "blob_path": "cms/medicare-inpatient/reporting_year=2024/medicare_inpatient_2024.json",
+  "blob_size_bytes": 85480601,
+  "page_count": 30,
+  "validation_status": "passed"
+}

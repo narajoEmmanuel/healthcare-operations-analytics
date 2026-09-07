@@ -58,3 +58,8 @@ Desktop.ini
 data/raw/
 data/processed/
 data/tmp/
+artifacts/*.tmp
+
+# Local Compose overrides and runtime exports
+docker-compose.override.yml
+*.csv
