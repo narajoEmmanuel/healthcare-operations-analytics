@@ -30,14 +30,14 @@ The provider CCN and DRG code therefore form a validated natural candidate key f
 | Full acquisition | Paginated CMS Data API retrieval | Completed and validated |
 | Data Understanding | Executed Jupyter notebook | Completed |
 | Local container runtime | Docker Desktop with WSL 2 | Installed and validated locally |
-| Raw object storage | Azurite Blob Storage | Planned; not configured |
+| Raw object storage | Azurite Blob Storage in Docker | Container, local port, and persistent volume configured and validated |
 | Reusable ingestion | Python ingestion pipeline and metadata | Planned; not implemented |
 | Data Profiling | Jupyter notebook | Questions defined; analysis not started |
 | Relational storage | PostgreSQL staging and analytics layers | Planned; not configured |
 | Analytics | SQL transformations and models | Planned; not implemented |
 | Reporting | Power BI Desktop | Planned; not connected |
 
-Docker Desktop is available as the future local infrastructure runtime and has passed the standard `hello-world` test. No containers, Compose configuration, Azurite service, PostgreSQL service, or persistent infrastructure volumes have been created for this project yet.
+Docker Desktop is the local infrastructure runtime and has passed the standard `hello-world` test. The official Azurite image was inspected, a named volume (`healthcare_azurite_data`) was created, and the `healthcare-azurite` container was validated with its Blob endpoint bound locally at `http://127.0.0.1:10000`. No Compose configuration or PostgreSQL service has been created yet.
 
 ## Target architecture
 
@@ -61,6 +61,8 @@ healthcare-operations-analytics/
 ├── README.md
 ├── LICENSE
 ├── requirements.txt
+├── docs/
+│   └── docker-basics.md
 ├── research/
 │   ├── business_case.md
 │   ├── domain_and_data.md
@@ -83,6 +85,7 @@ Only folders containing current artifacts are shown. `sql/`, `powerbi/`, `report
 - [`python/ingestion/00_api_source_probe.py`](python/ingestion/00_api_source_probe.py): compact first direct interaction with the CMS API
 - [`notebooks/01_data_understanding.ipynb`](notebooks/01_data_understanding.ipynb): completed and executed Data Understanding workflow
 - [`notebooks/02_data_profiling.ipynb`](notebooks/02_data_profiling.ipynb): purpose and questions reserved for the next interactive analytical stage
+- [`docs/docker-basics.md`](docs/docker-basics.md): beginner-friendly Docker and Azurite exercise covering the image, persistent volume, container, port, logs, and verified local state
 
 ## Run the current learning artifacts
 
@@ -110,6 +113,6 @@ The Data Understanding notebook contains the completed acquisition evidence and 
 
 ## Next milestone
 
-Learn and verify the concepts of **object storage, storage account, blob container, and blob**, followed by Docker fundamentals—**image, container, port, and volume**—before starting Azurite manually.
+Learn and verify the concepts of **object storage, storage account, blob container, and blob**, then make the first authenticated request to the already validated local Azurite Blob service. Reusable ingestion and automated infrastructure remain later milestones.
 
 Source datasets retain their original publisher terms and are not relicensed by this repository.
