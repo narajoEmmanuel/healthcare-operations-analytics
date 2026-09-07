@@ -1,4 +1,4 @@
-# Docker básico: Azurite con persistencia
+# Docker y Storage Explorer: Azurite con persistencia
 
 Esta guía registra el primer ejercicio práctico de Docker realizado para este proyecto. Su objetivo es explicar cómo descargar una imagen, crear almacenamiento persistente, levantar un contenedor y comprobar que el servicio funciona.
 
@@ -11,6 +11,7 @@ Estado comprobado el 6 de septiembre de 2026:
 - Docker Compose 5.1.1
 - Docker Buildx 0.33.0
 - backend WSL 2
+- Microsoft Azure Storage Explorer 1.45.0
 - Docker AI y las funciones beta desactivados por compatibilidad con Windows build 26200
 
 La instalación fue validada correctamente con la imagen `hello-world`.
@@ -22,6 +23,10 @@ Una **imagen** es una plantilla de solo lectura que contiene una aplicación y l
 Un **contenedor** es una instancia creada a partir de una imagen. Puede estar ejecutándose o detenido.
 
 Un **volumen** es almacenamiento administrado por Docker. Sus datos pueden sobrevivir aunque eliminemos el contenedor que los utilizaba.
+
+**Microsoft Azure Storage Explorer** es una aplicación gráfica que permite conectarse a Azurite y administrar el almacenamiento sin escribir cada solicitud HTTP manualmente. Storage Explorer no almacena los blobs: funciona como una ventana para ver y manipular lo que Azurite guarda en el volumen.
+
+Un **blob container** es una agrupación lógica de blobs dentro de una cuenta de almacenamiento. No es lo mismo que un contenedor de Docker.
 
 ```text
 Registro en Internet --docker pull--> Imagen local --docker run--> Contenedor
@@ -271,6 +276,158 @@ puerto 10000       volumen: healthcare_azurite_data
                          datos Blob
 ```
 
+## Paso 5: instalar Microsoft Azure Storage Explorer
+
+La aplicación se instaló desde el catálogo de Windows con:
+
+```powershell
+# Instala exactamente el paquete oficial de Microsoft.
+winget install `
+  --id Microsoft.Azure.StorageExplorer `
+  --exact `
+  --source winget `
+  --accept-source-agreements `
+  --accept-package-agreements
+```
+
+Significado de las partes principales:
+
+- `winget install` solicita a Windows que instale un programa.
+- `--id Microsoft.Azure.StorageExplorer` selecciona el paquete de Storage Explorer.
+- `--exact` evita seleccionar otro paquete con un nombre parecido.
+- `--source winget` utiliza el catálogo configurado de Windows.
+
+La instalación se verificó con:
+
+```powershell
+# Consulta el paquete instalado y su versión.
+winget list --id Microsoft.Azure.StorageExplorer --exact
+```
+
+Resultado validado:
+
+```text
+Microsoft Azure Storage Explorer 1.45.0
+```
+
+Microsoft publica la aplicación en la [página oficial de Azure Storage Explorer](https://azure.microsoft.com/en-us/products/storage/storage-explorer/).
+
+## Paso 6: conectar Storage Explorer con Azurite
+
+Azurite debe estar iniciado antes de abrir la conexión. Storage Explorer no inicia el emulador automáticamente.
+
+En Storage Explorer se siguió este recorrido:
+
+1. abrir **Conectar a Azure Storage**;
+2. seleccionar **Emulador de almacenamiento local**;
+3. completar la conexión;
+4. revisar el resumen;
+5. seleccionar **Conectar**.
+
+Configuración utilizada:
+
+```text
+Nombre para mostrar: healthcare-azurite-local
+Nombre de cuenta:    devstoreaccount1
+Puerto de blobs:     10000
+Puerto de archivos:  vacío
+Puerto de colas:     vacío
+Puerto de tablas:    vacío
+Usar HTTPS:          no
+```
+
+`devstoreaccount1` es la cuenta de desarrollo predeterminada de Azurite. Storage Explorer completa su clave local conocida; no corresponde a una credencial de Azure real.
+
+Los puertos de archivos, colas y tablas se dejaron vacíos porque este ejercicio inició únicamente `azurite-blob`. El punto de conexión resultante fue:
+
+```text
+http://127.0.0.1:10000/devstoreaccount1
+```
+
+La conexión apareció en el árbol de recursos como:
+
+```text
+Emulador y adjunto
+└── Cuentas de almacenamiento
+    └── healthcare-azurite-local (Key)
+```
+
+Microsoft documenta este procedimiento en [Conectar un emulador a Storage Explorer](https://learn.microsoft.com/es-es/azure/storage/common/storage-explorer-emulators).
+
+## Paso 7: crear el blob container `raw`
+
+Dentro de la conexión `healthcare-azurite-local`:
+
+1. expandir **Contenedores de blobs**;
+2. hacer clic derecho sobre ese nodo;
+3. seleccionar **Crear contenedor de blobs**;
+4. escribir `raw` en minúsculas;
+5. presionar `Enter`.
+
+El nombre `raw` indica que allí se guardan datos tal como llegaron de la fuente, antes de limpiarlos o transformarlos.
+
+Los logs confirmaron la creación:
+
+```text
+PUT /devstoreaccount1/raw?restype=container HTTP/1.1 201
+GET /devstoreaccount1/raw?restype=container HTTP/1.1 200
+```
+
+- `PUT` con código `201` significa que el recurso fue creado.
+- `GET` con código `200` significa que Azurite pudo encontrarlo y devolverlo.
+
+Este `raw` es un **blob container de Azure Storage**. El proceso `healthcare-azurite` continúa siendo el **contenedor de Docker**. Son niveles distintos.
+
+## Paso 8: cargar el primer blob
+
+Se abrió el blob container `raw` y se seleccionó **Cargar > Cargar archivos**.
+
+Archivo de origen local:
+
+```text
+data/raw/medicare_inpatient_2024.json
+```
+
+Opciones utilizadas:
+
+```text
+Tipo de blob:         Blob en bloques
+Nivel de acceso:      Predeterminado
+Directorio de destino: /
+```
+
+`/` significa que el archivo se guarda directamente en la raíz lógica de `raw`:
+
+```text
+raw/
+└── medicare_inpatient_2024.json
+```
+
+Storage Explorer dividió el archivo en bloques, cargó cada bloque y finalmente confirmó la lista completa de bloques. Los logs mostraron:
+
+```text
+HEAD .../raw/medicare_inpatient_2024.json HTTP/1.1 404
+PUT  .../raw/medicare_inpatient_2024.json?comp=block HTTP/1.1 201
+PUT  .../raw/medicare_inpatient_2024.json?comp=blocklist HTTP/1.1 201
+HEAD .../raw/medicare_inpatient_2024.json HTTP/1.1 200
+```
+
+Interpretación:
+
+- el primer `404` confirmó que el blob todavía no existía;
+- cada `201` confirmó que un bloque o la lista final se guardó correctamente;
+- el `200` final confirmó que el blob completo ya podía consultarse.
+
+Resultado validado:
+
+```text
+Blob:    raw/medicare_inpatient_2024.json
+Tamaño:  101,964,930 bytes (aproximadamente 97.24 MiB)
+Estado:  cargado correctamente
+```
+
+La carga fue completamente local: Storage Explorer envió el archivo a `127.0.0.1:10000`, Azurite lo procesó y el volumen `healthcare_azurite_data` conservó los datos. No se cargó el archivo a una cuenta de Azure en la nube.
+
 ## Comandos básicos para administrarlo
 
 ```powershell
@@ -308,6 +465,10 @@ docker volume rm healthcare_azurite_data
 - Paso 2, crear el volumen `healthcare_azurite_data`: **completado**.
 - Paso 3, levantar el contenedor `healthcare-azurite`: **completado**.
 - Paso 4, comprobar el servicio, los logs, el montaje y el puerto: **completado**.
+- Paso 5, instalar Microsoft Azure Storage Explorer 1.45.0: **completado**.
+- Paso 6, conectar Storage Explorer al emulador local: **completado**.
+- Paso 7, crear el blob container `raw`: **completado**.
+- Paso 8, cargar y verificar `medicare_inpatient_2024.json`: **completado**.
 
 Estado actual registrado:
 
@@ -317,4 +478,7 @@ Contenedor:   healthcare-azurite (activo)
 Puerto local: http://127.0.0.1:10000
 Volumen:      healthcare_azurite_data -> /data
 Servicio:     Blob Storage únicamente
+Conexión GUI: healthcare-azurite-local
+Blob container: raw
+Primer blob: raw/medicare_inpatient_2024.json
 ```
