@@ -1,0 +1,74 @@
+table 'Portfolio Overview'
+	lineageTag: 033aa6fb-41f3-4005-ba6d-62731b820be7
+
+	column reporting_year
+		dataType: int64
+		formatString: 0
+		lineageTag: ed36d8c5-3b5c-4d54-9061-c56b4a26421a
+		summarizeBy: none
+		sourceColumn: reporting_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_count
+		dataType: int64
+		formatString: #,0
+		lineageTag: d694eca1-0774-4baf-a157-6e2ce8cc04e5
+		summarizeBy: sum
+		sourceColumn: provider_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_count
+		dataType: int64
+		formatString: #,0
+		lineageTag: 5926dbce-9979-4d01-b2de-ef98b9fb57ec
+		summarizeBy: sum
+		sourceColumn: drg_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_discharges
+		dataType: int64
+		formatString: #,0
+		lineageTag: 75a62d28-9446-483a-aa65-e8dd809e1c04
+		summarizeBy: sum
+		sourceColumn: total_discharges
+
+		annotation SummarizationSetBy = Automatic
+
+	column estimated_aggregate_total_payment
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 92f13c4e-15c5-4750-9ba3-60156d6d2d7b
+		summarizeBy: sum
+		sourceColumn: estimated_aggregate_total_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column estimated_aggregate_medicare_payment
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: c685f4b3-847f-404d-aae3-f0d3645471f5
+		summarizeBy: sum
+		sourceColumn: estimated_aggregate_medicare_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Portfolio Overview' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("127.0.0.1:5432", "healthcare_analytics"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "v_portfolio_overview"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(#"Navigation 1",{{"estimated_aggregate_total_payment", Currency.Type}, {"estimated_aggregate_medicare_payment", Currency.Type}, {"reporting_year", Int64.Type}})
+				in
+				  #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation

@@ -1,0 +1,61 @@
+// These measures are implemented on the Provider DRG Review table in the PBIP semantic model.
+
+Total Discharges =
+SUM ( 'Provider DRG Review'[total_discharges] )
+
+Estimated Aggregate Total Payment =
+SUM ( 'Provider DRG Review'[estimated_aggregate_total_payment] )
+
+Estimated Aggregate Medicare Payment =
+SUM ( 'Provider DRG Review'[estimated_aggregate_medicare_payment] )
+
+Provider Count =
+DISTINCTCOUNT ( 'Provider DRG Review'[provider_ccn] )
+
+DRG Count =
+DISTINCTCOUNT ( 'Provider DRG Review'[drg_code] )
+
+Average Total Payment =
+AVERAGE ( 'Provider DRG Review'[avg_total_payment] )
+
+Average Medicare Payment =
+AVERAGE ( 'Provider DRG Review'[avg_medicare_payment] )
+
+Review Priority Count =
+COUNTROWS ( 'Provider DRG Review' )
+
+High Priority Count =
+CALCULATE (
+    [Review Priority Count],
+    KEEPFILTERS ( 'Provider DRG Review'[review_priority] = "High review priority" )
+)
+
+Moderate Priority Count =
+CALCULATE (
+    [Review Priority Count],
+    KEEPFILTERS ( 'Provider DRG Review'[review_priority] = "Moderate review priority" )
+)
+
+Routine Review Count =
+CALCULATE (
+    [Review Priority Count],
+    KEEPFILTERS ( 'Provider DRG Review'[review_priority] = "Routine review" )
+)
+
+High Priority Share =
+DIVIDE ( [High Priority Count], [Review Priority Count] )
+
+Selected DRG Median Total Payment =
+IF (
+    HASONEVALUE ( 'Provider DRG Review'[drg_code] ),
+    MAX ( 'Provider DRG Review'[drg_median_total_payment] )
+)
+
+Payment Difference from DRG Median =
+[Average Total Payment] - [Selected DRG Median Total Payment]
+
+Payment Difference Percent =
+DIVIDE (
+    [Payment Difference from DRG Median],
+    [Selected DRG Median Total Payment]
+)

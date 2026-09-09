@@ -1,0 +1,22 @@
+{
+  "name": "Healthcare Finance",
+  "dataColors": [
+    "#1F6D7A",
+    "#243B53",
+    "#5B8C85",
+    "#7B8794",
+    "#C28A27",
+    "#A64B4B",
+    "#8E6C8A",
+    "#4F6D7A"
+  ],
+  "background": "#F4F6F8",
+  "foreground": "#1F2933",
+  "tableAccent": "#1F6D7A",
+  "good": "#5B8C85",
+  "neutral": "#C28A27",
+  "bad": "#A64B4B",
+  "minimum": "#DCE8EA",
+  "center": "#F4F6F8",
+  "maximum": "#1F6D7A"
+}

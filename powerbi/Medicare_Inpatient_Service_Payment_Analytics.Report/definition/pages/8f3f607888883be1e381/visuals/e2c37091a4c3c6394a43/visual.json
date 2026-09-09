@@ -1,0 +1,328 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "e2c37091a4c3c6394a43",
+  "position": {
+    "x": 872,
+    "y": 472,
+    "z": 1200,
+    "height": 552,
+    "width": 1000,
+    "tabOrder": 1200
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "provider_ccn"
+                }
+              },
+              "queryRef": "Provider DRG Review.provider_ccn",
+              "nativeQueryRef": "Provider CCN"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "provider_name"
+                }
+              },
+              "queryRef": "Provider DRG Review.provider_name",
+              "nativeQueryRef": "Provider Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "provider_state"
+                }
+              },
+              "queryRef": "Provider DRG Review.provider_state",
+              "nativeQueryRef": "Provider State"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "provider_ruca"
+                }
+              },
+              "queryRef": "Provider DRG Review.provider_ruca",
+              "nativeQueryRef": "Provider RUCA"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "total_discharges"
+                }
+              },
+              "queryRef": "Provider DRG Review.total_discharges",
+              "nativeQueryRef": "Total Discharges"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "avg_total_payment"
+                }
+              },
+              "queryRef": "Provider DRG Review.avg_total_payment",
+              "nativeQueryRef": "Average Total Payment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "drg_median_total_payment"
+                }
+              },
+              "queryRef": "Provider DRG Review.drg_median_total_payment",
+              "nativeQueryRef": "DRG Median Total Payment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "state_median_total_payment"
+                }
+              },
+              "queryRef": "Provider DRG Review.state_median_total_payment",
+              "nativeQueryRef": "State Median Total Payment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "ruca_median_total_payment"
+                }
+              },
+              "queryRef": "Provider DRG Review.ruca_median_total_payment",
+              "nativeQueryRef": "RUCA Median Total Payment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "payment_difference_from_drg_median"
+                }
+              },
+              "queryRef": "Provider DRG Review.payment_difference_from_drg_median",
+              "nativeQueryRef": "Payment Difference from DRG Median"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "payment_difference_pct"
+                }
+              },
+              "queryRef": "Provider DRG Review.payment_difference_pct",
+              "nativeQueryRef": "Payment Difference Percent"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Provider DRG Review"
+                    }
+                  },
+                  "Property": "payment_percentile_within_drg"
+                }
+              },
+              "queryRef": "Provider DRG Review.payment_percentile_within_drg",
+              "nativeQueryRef": "Payment Percentile within DRG"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Provider DRG Review"
+                  }
+                },
+                "Property": "payment_difference_pct"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            },
+            "autoSizeColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            },
+            "backColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F4F6F8'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Provider Benchmark Detail'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#243B53'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,286 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "e21ded9433582dbf74c3",
+  "position": {
+    "x": 48,
+    "y": 600,
+    "z": 700,
+    "height": 424,
+    "width": 1824,
+    "tabOrder": 700
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DRG Benchmark"
+                    }
+                  },
+                  "Property": "drg_code"
+                }
+              },
+              "queryRef": "DRG Benchmark.drg_code",
+              "nativeQueryRef": "DRG Code"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DRG Benchmark"
+                    }
+                  },
+                  "Property": "drg_description"
+                }
+              },
+              "queryRef": "DRG Benchmark.drg_description",
+              "nativeQueryRef": "DRG Description"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DRG Benchmark"
+                    }
+                  },
+                  "Property": "provider_count"
+                }
+              },
+              "queryRef": "DRG Benchmark.provider_count",
+              "nativeQueryRef": "Provider Count"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DRG Benchmark"
+                    }
+                  },
+                  "Property": "total_discharges"
+                }
+              },
+              "queryRef": "DRG Benchmark.total_discharges",
+              "nativeQueryRef": "Total Discharges"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DRG Benchmark"
+                    }
+                  },
+                  "Property": "discharge_share_national"
+                }
+              },
+              "queryRef": "DRG Benchmark.discharge_share_national",
+              "nativeQueryRef": "National Discharge Share"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DRG Benchmark"
+                    }
+                  },
+                  "Property": "estimated_aggregate_total_payment"
+                }
+              },
+              "queryRef": "DRG Benchmark.estimated_aggregate_total_payment",
+              "nativeQueryRef": "Estimated Aggregate Total Payment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DRG Benchmark"
+                    }
+                  },
+                  "Property": "provider_average_total_payment"
+                }
+              },
+              "queryRef": "DRG Benchmark.provider_average_total_payment",
+              "nativeQueryRef": "Provider Average Total Payment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DRG Benchmark"
+                    }
+                  },
+                  "Property": "provider_median_total_payment"
+                }
+              },
+              "queryRef": "DRG Benchmark.provider_median_total_payment",
+              "nativeQueryRef": "Provider Median Total Payment"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DRG Benchmark"
+                    }
+                  },
+                  "Property": "discharge_weighted_total_payment"
+                }
+              },
+              "queryRef": "DRG Benchmark.discharge_weighted_total_payment",
+              "nativeQueryRef": "Discharge-Weighted Total Payment"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "DRG Benchmark"
+                  }
+                },
+                "Property": "estimated_aggregate_total_payment"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": false
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            },
+            "autoSizeColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            },
+            "backColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F4F6F8'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'DRG Benchmark Detail'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#243B53'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

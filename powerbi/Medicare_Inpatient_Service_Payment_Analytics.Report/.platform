@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Medicare_Inpatient_Service_Payment_Analytics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "607054a4-023e-4c93-af5a-1fa22ceb8b36"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Medicare_Inpatient_Service_Payment_Analytics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "29d9e697-a3af-4291-a74c-9647b87288e9"
+  }
+}

@@ -1,0 +1,372 @@
+table 'Provider DRG Review'
+	lineageTag: b24b53b0-fa21-48ca-afe8-dbb07151b829
+
+	measure 'Total Discharges' = SUM('Provider DRG Review'[total_discharges])
+		formatString: #,0
+		lineageTag: 2b6f14f3-556c-4ad1-9809-a16cee2aa1d8
+
+		changedProperty = IsHidden
+
+	measure 'Estimated Aggregate Total Payment' = SUM('Provider DRG Review'[estimated_aggregate_total_payment])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: a80a6b3a-eac2-4b78-8cc4-cbd0fef50521
+
+	measure 'Estimated Aggregate Medicare Payment' = SUM('Provider DRG Review'[estimated_aggregate_medicare_payment])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: b674eea9-d9b0-4b00-af82-acd519896e04
+
+	measure 'Provider Count' = DISTINCTCOUNT('Provider DRG Review'[provider_ccn])
+		formatString: #,0
+		lineageTag: e0ed22af-2381-46ae-9e7d-334d97397e81
+
+	measure 'DRG Count' = DISTINCTCOUNT('Provider DRG Review'[drg_code])
+		formatString: #,0
+		lineageTag: 2ab668b1-6db9-458a-ae06-eed7a2c1e53c
+
+	measure 'High Priority Count' =
+
+			CALCULATE(
+			    [Review Priority Count],
+			    KEEPFILTERS('Provider DRG Review'[review_priority] = "High review priority")
+			)
+		formatString: #,0
+		lineageTag: fc5ca019-f443-4066-8877-b053581d1ff6
+
+	measure 'Moderate Priority Count' =
+
+			CALCULATE(
+			    [Review Priority Count],
+			    KEEPFILTERS('Provider DRG Review'[review_priority] = "Moderate review priority")
+			)
+		formatString: #,0
+		lineageTag: abc901ac-9636-4cc2-9cf2-22982736a70d
+
+	measure 'Routine Review Count' =
+
+			CALCULATE(
+			    [Review Priority Count],
+			    KEEPFILTERS('Provider DRG Review'[review_priority] = "Routine review")
+			)
+		formatString: #,0
+		lineageTag: 451b2ef7-b3be-47b3-8560-22b6ec42a130
+
+	measure 'Review Priority Count' =
+
+			COUNTROWS('Provider DRG Review')
+		formatString: #,0
+		lineageTag: cffcce55-1e46-47bb-8e86-057c7662ad60
+
+	measure 'High Priority Share' =
+
+			DIVIDE(
+			    [High Priority Count],
+			    [Review Priority Count]
+			)
+		formatString: 0.00%
+		lineageTag: 2ba4a841-3ead-471f-a0dc-6ab0397aa90a
+
+	measure 'Average Total Payment' = AVERAGE('Provider DRG Review'[avg_total_payment])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+
+	measure 'Average Medicare Payment' = AVERAGE('Provider DRG Review'[avg_medicare_payment])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+
+	measure 'Selected DRG Median Total Payment' =
+
+			IF(
+			    HASONEVALUE('Provider DRG Review'[drg_code]),
+			    MAX('Provider DRG Review'[drg_median_total_payment])
+			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+
+	measure 'Payment Difference from DRG Median' =
+
+			[Average Total Payment] - [Selected DRG Median Total Payment]
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+
+	measure 'Payment Difference Percent' =
+
+			DIVIDE(
+			    [Payment Difference from DRG Median],
+			    [Selected DRG Median Total Payment]
+			)
+		formatString: 0.00%
+
+	column reporting_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 3d5a1f1b-688a-4caa-bc9b-38f2dd5b5a9e
+		summarizeBy: none
+		sourceColumn: reporting_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_key
+		isHidden
+		dataType: int64
+		formatString: 0
+		lineageTag: 3e978693-3483-4cc3-8e85-bd7fb87c486c
+		summarizeBy: sum
+		sourceColumn: provider_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_key
+		isHidden
+		dataType: int64
+		formatString: 0
+		lineageTag: f4051e24-a3b3-4da7-9dcc-acfb95bb9508
+		summarizeBy: sum
+		sourceColumn: drg_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_ccn
+		dataType: string
+		lineageTag: 66448906-50fd-4cb6-a2ce-9a79439ea3c7
+		summarizeBy: none
+		sourceColumn: provider_ccn
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_code
+		dataType: string
+		lineageTag: 5233b42e-a567-4fcd-9d16-29997bbee067
+		summarizeBy: none
+		sourceColumn: drg_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_discharges
+		dataType: int64
+		formatString: #,0
+		lineageTag: 8850be71-fac7-42f7-8e96-be964c6cfef2
+		summarizeBy: sum
+		sourceColumn: total_discharges
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_submitted_covered_charge
+		dataType: double
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 5e5fa1d7-1f99-4ac2-a6f7-522dd4896088
+		summarizeBy: sum
+		sourceColumn: avg_submitted_covered_charge
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_total_payment
+		dataType: double
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 14ca7afe-4fc8-4089-9d0b-9a2a05329657
+		summarizeBy: sum
+		sourceColumn: avg_total_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column avg_medicare_payment
+		dataType: double
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: dd76af22-684f-48dd-8ce2-bb87bf0a0e65
+		summarizeBy: sum
+		sourceColumn: avg_medicare_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column estimated_aggregate_total_payment
+		dataType: double
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 31e30b53-d0d9-4db5-851f-c56c1fc828d4
+		summarizeBy: sum
+		sourceColumn: estimated_aggregate_total_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column estimated_aggregate_medicare_payment
+		dataType: double
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: fbf767e7-f45c-4a41-b4b5-ad123bbb7f7f
+		summarizeBy: sum
+		sourceColumn: estimated_aggregate_medicare_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column source_sha256
+		isHidden
+		dataType: string
+		lineageTag: c46a0cd2-5610-4202-974a-17a50a16d3bd
+		summarizeBy: none
+		sourceColumn: source_sha256
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_name
+		dataType: string
+		lineageTag: 7d03cc59-0168-40c3-bcdf-9f98deba8011
+		summarizeBy: none
+		sourceColumn: provider_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_state
+		dataType: string
+		lineageTag: b2c65e8e-2e57-4107-90dd-3aa1bcee9f7e
+		summarizeBy: none
+		sourceColumn: provider_state
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_ruca
+		dataType: string
+		lineageTag: 803200da-2e3a-4775-a544-2fc74da88c23
+		summarizeBy: none
+		sourceColumn: provider_ruca
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_ruca_description
+		dataType: string
+		lineageTag: b3d68922-6e05-4f7a-9761-12511286c1a4
+		summarizeBy: none
+		sourceColumn: provider_ruca_description
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_description
+		dataType: string
+		lineageTag: 03eb8a40-fba9-4403-9fd6-acf6eb2402a4
+		summarizeBy: none
+		sourceColumn: drg_description
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_median_total_payment
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: d035148f-e3fb-4dad-aef9-d46a5b93a70a
+		summarizeBy: sum
+		sourceColumn: drg_median_total_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column state_median_total_payment
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: fce310ce-9289-431e-9bc0-32a81cfeb667
+		summarizeBy: sum
+		sourceColumn: state_median_total_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ruca_median_total_payment
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 9c97c752-be61-4a8b-b237-269b84d71474
+		summarizeBy: sum
+		sourceColumn: ruca_median_total_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column payment_difference_from_drg_median
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: c7bc8334-34d8-4807-935f-ced5c92d8eff
+		summarizeBy: sum
+		sourceColumn: payment_difference_from_drg_median
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column payment_difference_pct
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 37c770ab-42db-462b-a9dc-910db9a0eb8a
+		summarizeBy: sum
+		sourceColumn: payment_difference_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column discharge_share_within_provider
+		dataType: double
+		formatString: 0.00%
+		lineageTag: a131b99e-7ef1-4e69-b4e9-79dbb22a223a
+		summarizeBy: sum
+		sourceColumn: discharge_share_within_provider
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column payment_percentile_within_drg
+		dataType: double
+		formatString: 0.00%
+		lineageTag: f245f737-2ddf-4afe-b546-5e56a696d86c
+		summarizeBy: sum
+		sourceColumn: payment_percentile_within_drg
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column exposure_percentile
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 291c5d8b-152c-4d86-96b4-f6c98152a35b
+		summarizeBy: sum
+		sourceColumn: exposure_percentile
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column discharge_percentile
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 1c0fd705-b492-499c-9c86-f40a7a106fce
+		summarizeBy: sum
+		sourceColumn: discharge_percentile
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column review_priority
+		dataType: string
+		lineageTag: 55c7bfaf-da82-49a1-b607-c010f407a406
+		summarizeBy: none
+		sourceColumn: review_priority
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Provider DRG Review' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("127.0.0.1:5432", "healthcare_analytics"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "v_provider_drg_review_priority"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(#"Navigation 1",{{"reporting_year", Int64.Type}, {"drg_median_total_payment", Currency.Type}, {"state_median_total_payment", Currency.Type}, {"ruca_median_total_payment", Currency.Type}, {"payment_difference_from_drg_median", Currency.Type}})
+				in
+				  #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation

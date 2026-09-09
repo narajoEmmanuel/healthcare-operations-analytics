@@ -1,0 +1,114 @@
+table 'DRG Benchmark'
+	lineageTag: adb7f015-d743-4730-87fe-9ed94a3a07ee
+
+	column reporting_year
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a553dd9-d814-4279-9164-d666190b802c
+		summarizeBy: none
+		sourceColumn: reporting_year
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_code
+		dataType: string
+		lineageTag: 1961e05c-bf89-4d29-9ae0-4cd627309c78
+		summarizeBy: none
+		sourceColumn: drg_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column drg_description
+		dataType: string
+		lineageTag: 362d04bf-0974-4d4a-b974-26d1833074b1
+		summarizeBy: none
+		sourceColumn: drg_description
+
+		annotation SummarizationSetBy = Automatic
+
+	column provider_count
+		dataType: int64
+		formatString: #,0
+		lineageTag: b9a0dd9f-1c04-462a-a823-e3258b4736de
+		summarizeBy: sum
+		sourceColumn: provider_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_discharges
+		dataType: int64
+		formatString: #,0
+		lineageTag: 3be6df2a-1a83-437f-ad9e-e813dbe8b678
+		summarizeBy: sum
+		sourceColumn: total_discharges
+
+		annotation SummarizationSetBy = Automatic
+
+	column discharge_share_national
+		dataType: double
+		formatString: 0.00%
+		lineageTag: 38afb630-53ab-4135-a98e-8a798abd9ab6
+		summarizeBy: sum
+		sourceColumn: discharge_share_national
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column estimated_aggregate_total_payment
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: c166167b-30c4-449c-a565-8dd575795f1a
+		summarizeBy: sum
+		sourceColumn: estimated_aggregate_total_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column provider_average_total_payment
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 59cedb7c-309f-4bd2-a39b-37ea921571d5
+		summarizeBy: sum
+		sourceColumn: provider_average_total_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column provider_median_total_payment
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 7b8b9ed8-fb01-438c-a368-94fa9485d16e
+		summarizeBy: sum
+		sourceColumn: provider_median_total_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column discharge_weighted_total_payment
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 6b44c9a6-6c1a-4aaf-b3db-eca1f94e582f
+		summarizeBy: sum
+		sourceColumn: discharge_weighted_total_payment
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'DRG Benchmark' = m
+		mode: import
+		source =
+				let
+				  Source = PostgreSQL.Database("127.0.0.1:5432", "healthcare_analytics"),
+				  #"Navigation 1" = Source{[Schema = "analytics", Item = "v_drg_benchmark"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(#"Navigation 1",{{"reporting_year", Int64.Type}, {"discharge_weighted_total_payment", Currency.Type}, {"provider_median_total_payment", Currency.Type}, {"provider_average_total_payment", Currency.Type}, {"estimated_aggregate_total_payment", Currency.Type}})
+				in
+				  #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
