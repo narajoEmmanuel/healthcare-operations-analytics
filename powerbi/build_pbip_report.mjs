@@ -88,21 +88,25 @@ function measure(table, property) {
   };
 }
 
-function projection(field, queryRef, nativeQueryRef) {
-  return { field, queryRef, nativeQueryRef };
+function projection(field, queryRef, nativeQueryRef, displayName, format) {
+  const value = { field, queryRef, nativeQueryRef };
+  if (displayName && displayName !== nativeQueryRef) value.displayName = displayName;
+  if (format) value.format = format;
+  return value;
 }
 
-function columnProjection(table, property, label) {
-  return projection(column(table, property), `${table}.${property}`, label);
+function columnProjection(table, property, label, format) {
+  return projection(column(table, property), `${table}.${property}`, property, label, format);
 }
 
-function aggregateProjection(table, property, label, fn = 0) {
+function aggregateProjection(table, property, label, fn = 0, format) {
   const names = ["Sum", "Average", "Count", "Min", "Max", "CountNonNull", "Median", "StdDev", "Variance"];
-  return projection(aggregation(table, property, fn), `${names[fn]}(${table}.${property})`, label);
+  const nativeNames = ["Sum", "Average", "Count", "Min", "Max", "Count", "Median", "Standard deviation", "Variance"];
+  return projection(aggregation(table, property, fn), `${names[fn]}(${table}.${property})`, `${nativeNames[fn]} of ${property}`, label, format);
 }
 
-function measureProjection(table, property, label = property) {
-  return projection(measure(table, property), `${table}.${property}`, label);
+function measureProjection(table, property, label = property, format) {
+  return projection(measure(table, property), `${table}.${property}`, property, label, format);
 }
 
 function position(x, y, width, height, order) {
@@ -122,6 +126,7 @@ function titleVco(text) {
         },
       },
     ],
+    subTitle: [{ properties: { show: bool(false) } }],
   };
 }
 
@@ -178,6 +183,7 @@ function card(name, pos, measureName, options = {}) {
     labelDisplayUnits: literal(options.displayUnits ?? 1, "D"),
     labelPrecision: literal(options.precision ?? 0, "L"),
   };
+  if (options.customFormatString) valueProperties.customFormatString = literal(options.customFormatString);
   const labelProperties = {
     show: bool(true),
     text: literal(options.label ?? measureName),
@@ -199,6 +205,9 @@ function card(name, pos, measureName, options = {}) {
         value: [{ properties: valueProperties, selector: { id: "default" } }],
         label: [{ properties: labelProperties, selector: { id: "default" } }],
         outline: [{ properties: { show: bool(false) }, selector: { id: "default" } }],
+      },
+      visualContainerObjects: {
+        subTitle: [{ properties: { show: bool(false) } }],
       },
       drillFilterOtherVisuals: true,
     },
@@ -234,6 +243,7 @@ function slicer(name, pos, table, property, label, strictSingleSelect = false) {
       },
       objects,
       visualContainerObjects: {
+        subTitle: [{ properties: { show: bool(false) } }],
         padding: [
           {
             properties: {
@@ -303,6 +313,16 @@ function barChart(name, pos, options) {
   };
   if (options.tooltips?.length) queryState.Tooltips = { projections: options.tooltips };
   const sortField = options.sortField;
+  const labelProperties = {
+    show: bool(true),
+    labelPosition: literal("OutsideEnd"),
+    optimizeLabelDisplay: bool(true),
+    labelOverflow: bool(true),
+    labelDisplayUnits: literal(options.labelDisplayUnits ?? 0, "D"),
+    labelPrecision: literal(options.labelPrecision ?? 1, "L"),
+    fontSize: literal(10, "D"),
+  };
+  if (options.labelCustomFormatString) labelProperties.valueCustomFormatString = literal(options.labelCustomFormatString);
   return {
     $schema: visualSchema,
     name,
@@ -319,15 +339,13 @@ function barChart(name, pos, options) {
       objects: {
         labels: [
           {
-            properties: {
-              show: bool(true),
-              labelPosition: literal("OutsideEnd"),
-              labelDisplayUnits: literal(options.labelDisplayUnits ?? 0, "D"),
-              labelPrecision: literal(options.labelPrecision ?? 1, "L"),
-              fontSize: literal(10, "D"),
-            },
+            properties: labelProperties,
           },
         ],
+        ...(options.axisDisplayUnits ? { valueAxis: [{ properties: {
+          labelDisplayUnits: literal(options.axisDisplayUnits, "D"),
+          labelPrecision: literal(options.axisPrecision ?? 2, "L"),
+        } }] } : {}),
       },
       visualContainerObjects: titleVco(options.title),
       drillFilterOtherVisuals: true,
@@ -343,7 +361,7 @@ function tableVisual(name, pos, table, fields, title, sort = []) {
   }));
   const query = {
     queryState: {
-      Values: { projections: fields.map((f) => columnProjection(table, f.property, f.label)) },
+      Values: { projections: fields.map((f) => columnProjection(table, f.property, f.label, f.format)) },
     },
   };
   if (sortEntries.length) query.sortDefinition = { sort: sortEntries, isDefaultSort: false };
@@ -411,8 +429,8 @@ const executiveVisuals = [
   textbox(existingExecutiveVisuals.subtitle, position(48, 72, 1200, 32, 200), "2024 CMS hospital benchmarking | Executive Overview", { fontSize: "14px", color: "#52606D" }),
   card(existingExecutiveVisuals.totalDischarges, position(48, 128, 426, 152, 300), "Total Discharges", { displayUnits: 1000000, precision: 2 }),
   card(existingExecutiveVisuals.aggregatePayment, position(490, 128, 426, 152, 400), "Estimated Aggregate Total Payment", { displayUnits: 1000000000, precision: 2 }),
-  card(existingExecutiveVisuals.providerCount, position(932, 128, 426, 152, 500), "Provider Count", { displayUnits: 1, precision: 0 }),
-  card(existingExecutiveVisuals.drgCount, position(1374, 128, 498, 152, 600), "DRG Count", { displayUnits: 1, precision: 0 }),
+  card(existingExecutiveVisuals.providerCount, position(932, 128, 426, 152, 500), "Provider Count", { displayUnits: 1, precision: 0, customFormatString: "#,0" }),
+  card(existingExecutiveVisuals.drgCount, position(1374, 128, 498, 152, 600), "DRG Count", { displayUnits: 1, precision: 0, customFormatString: "#,0" }),
   barChart(v("executive", "payment-chart"), position(48, 312, 896, 624, 700), {
     table: "DRG Benchmark",
     category: "drg_code",
@@ -428,6 +446,7 @@ const executiveVisuals = [
     top: 10,
     filterSeed: "executive-payment-top10",
     labelDisplayUnits: 1000000000,
+    axisDisplayUnits: 1000000000,
     labelPrecision: 2,
     title: "Top DRGs by Estimated Aggregate Payment",
   }),
@@ -446,6 +465,7 @@ const executiveVisuals = [
     top: 10,
     filterSeed: "executive-discharges-top10",
     labelDisplayUnits: 1000,
+    axisDisplayUnits: 1000000,
     labelPrecision: 0,
     title: "Top DRGs by Discharge Volume",
   }),
@@ -472,6 +492,7 @@ const serviceVisuals = [
     top: 15,
     filterSeed: "service-discharges-top15",
     labelDisplayUnits: 1000,
+    axisDisplayUnits: 1000000,
     labelPrecision: 0,
     title: "Top 15 DRGs by Total Discharges",
   }),
@@ -491,19 +512,20 @@ const serviceVisuals = [
     top: 15,
     filterSeed: "service-payment-top15",
     labelDisplayUnits: 1000000000,
+    axisDisplayUnits: 1000000000,
     labelPrecision: 2,
     title: "Top 15 DRGs by Estimated Aggregate Total Payment",
   }),
   tableVisual(v("service", "benchmark-table"), position(48, 600, 1824, 424, 700), "DRG Benchmark", [
     { property: "drg_code", label: "DRG Code" },
     { property: "drg_description", label: "DRG Description" },
-    { property: "provider_count", label: "Provider Count" },
-    { property: "total_discharges", label: "Total Discharges" },
-    { property: "discharge_share_national", label: "National Discharge Share" },
-    { property: "estimated_aggregate_total_payment", label: "Estimated Aggregate Total Payment" },
-    { property: "provider_average_total_payment", label: "Provider Average Total Payment" },
-    { property: "provider_median_total_payment", label: "Provider Median Total Payment" },
-    { property: "discharge_weighted_total_payment", label: "Discharge-Weighted Total Payment" },
+    { property: "provider_count", label: "Provider Count", format: "#,0" },
+    { property: "total_discharges", label: "Total Discharges", format: "#,0" },
+    { property: "discharge_share_national", label: "National Discharge Share", format: "0.00%" },
+    { property: "estimated_aggregate_total_payment", label: "Estimated Aggregate Total Payment", format: "$#,0.00" },
+    { property: "provider_average_total_payment", label: "Provider Average Total Payment", format: "$#,0.00" },
+    { property: "provider_median_total_payment", label: "Provider Median Total Payment", format: "$#,0.00" },
+    { property: "discharge_weighted_total_payment", label: "Discharge-Weighted Total Payment", format: "$#,0.00" },
   ], "DRG Benchmark Detail", [{ property: "estimated_aggregate_total_payment", direction: "Descending" }]),
 ];
 
@@ -512,11 +534,13 @@ const paymentVisuals = [
   textbox(v("payment", "subtitle"), position(48, 72, 1000, 32, 200), "Same-DRG provider payment variation", { fontSize: "14px", color: "#52606D" }),
   slicer(v("payment", "drg-code"), position(48, 112, 220, 80, 300), "Provider DRG Review", "drg_code", "DRG Code (select one)", true),
   slicer(v("payment", "drg-description"), position(284, 112, 650, 80, 400), "Provider DRG Review", "drg_description", "DRG Description"),
-  slicer(v("payment", "state"), position(950, 112, 220, 80, 500), "Provider DRG Review", "provider_state", "Provider State"),
-  slicer(v("payment", "ruca"), position(1186, 112, 300, 80, 600), "Provider DRG Review", "provider_ruca", "Provider RUCA"),
-  card(v("payment", "median-card"), position(48, 216, 520, 144, 700), "Selected DRG Median Total Payment", { displayUnits: 1, precision: 2 }),
-  card(v("payment", "average-card"), position(584, 216, 520, 144, 800), "Average Total Payment", { displayUnits: 1, precision: 2 }),
-  card(v("payment", "provider-card"), position(1120, 216, 520, 144, 900), "Provider Count", { displayUnits: 1, precision: 0 }),
+  slicer(v("payment", "state"), position(950, 112, 220, 80, 500), "Provider DRG Review", "provider_state", "State"),
+  slicer(v("payment", "ruca"), position(1186, 112, 300, 80, 600), "Provider DRG Review", "provider_ruca", "RUCA"),
+  card(v("payment", "median-card"), position(48, 216, 352, 144, 700), "Selected DRG Median Total Payment", { displayUnits: 1, precision: 2, customFormatString: "$#,0.00", fontSize: 24 }),
+  card(v("payment", "average-card"), position(416, 216, 352, 144, 800), "Average Total Payment", { displayUnits: 1, precision: 2, customFormatString: "$#,0.00", fontSize: 24 }),
+  card(v("payment", "provider-card"), position(784, 216, 352, 144, 900), "Provider Count", { displayUnits: 1, precision: 0, customFormatString: "#,0", fontSize: 24 }),
+  card(v("payment", "discharges-card"), position(1152, 216, 352, 144, 950), "Total Discharges", { displayUnits: 1, precision: 0, customFormatString: "#,0", fontSize: 24 }),
+  card(v("payment", "payment-card"), position(1520, 216, 352, 144, 975), "Estimated Aggregate Total Payment", { displayUnits: 1, precision: 2, customFormatString: "$#,0.00", fontSize: 22 }),
   barChart(v("payment", "provider-chart"), position(48, 384, 800, 640, 1000), {
     table: "Provider DRG Review",
     category: "provider_name",
@@ -528,30 +552,31 @@ const paymentVisuals = [
     tooltips: [
       aggregateProjection("Provider DRG Review", "total_discharges", "Total Discharges"),
       aggregateProjection("Provider DRG Review", "estimated_aggregate_total_payment", "Estimated Aggregate Total Payment"),
-      aggregateProjection("Provider DRG Review", "payment_difference_pct", "Payment Difference from DRG Median", 1),
+      aggregateProjection("Provider DRG Review", "payment_difference_pct", "Payment Difference %", 1, "0.00%"),
     ],
     sortField: measure("Provider DRG Review", "Average Total Payment"),
     topOrderProperty: "estimated_aggregate_total_payment",
     top: 20,
     filterSeed: "payment-provider-top20",
-    labelDisplayUnits: 1000,
+    labelDisplayUnits: 1,
     labelPrecision: 1,
+    labelCustomFormatString: '$0,.0"K"',
     title: "Provider Average Payment vs Same-DRG Median",
   }),
   textbox(v("payment", "note"), position(872, 384, 1000, 72, 1100), "Payment differences are screening signals and may reflect legitimate geographic or institutional payment adjustments.", { fontSize: "12px", color: "#52606D" }),
   tableVisual(v("payment", "detail-table"), position(872, 472, 1000, 552, 1200), "Provider DRG Review", [
     { property: "provider_ccn", label: "Provider CCN" },
     { property: "provider_name", label: "Provider Name" },
-    { property: "provider_state", label: "Provider State" },
-    { property: "provider_ruca", label: "Provider RUCA" },
-    { property: "total_discharges", label: "Total Discharges" },
-    { property: "avg_total_payment", label: "Average Total Payment" },
-    { property: "drg_median_total_payment", label: "DRG Median Total Payment" },
-    { property: "state_median_total_payment", label: "State Median Total Payment" },
-    { property: "ruca_median_total_payment", label: "RUCA Median Total Payment" },
-    { property: "payment_difference_from_drg_median", label: "Payment Difference from DRG Median" },
-    { property: "payment_difference_pct", label: "Payment Difference Percent" },
-    { property: "payment_percentile_within_drg", label: "Payment Percentile within DRG" },
+    { property: "provider_state", label: "State" },
+    { property: "provider_ruca", label: "RUCA" },
+    { property: "total_discharges", label: "Total Discharges", format: "#,0" },
+    { property: "avg_total_payment", label: "Average Total Payment", format: "$#,0.00" },
+    { property: "drg_median_total_payment", label: "DRG Median Total Payment", format: "$#,0.00" },
+    { property: "state_median_total_payment", label: "State Median Total Payment", format: "$#,0.00" },
+    { property: "ruca_median_total_payment", label: "RUCA Median Total Payment", format: "$#,0.00" },
+    { property: "payment_difference_from_drg_median", label: "Payment Difference from DRG Median", format: "$#,0.00" },
+    { property: "payment_difference_pct", label: "Payment Difference %", format: "0.00%" },
+    { property: "payment_percentile_within_drg", label: "Payment Percentile within DRG", format: "0.00%" },
   ], "Provider Benchmark Detail", [{ property: "payment_difference_pct", direction: "Descending" }]),
 ];
 
@@ -559,26 +584,26 @@ const priorityVisuals = [
   textbox(v("priority", "title"), position(48, 24, 1000, 48, 100), "Review Priorities", { fontSize: "26px", bold: true }),
   textbox(v("priority", "subtitle"), position(48, 72, 1000, 32, 200), "Transparent screening for deeper financial review", { fontSize: "14px", color: "#52606D" }),
   slicer(v("priority", "priority"), position(48, 112, 280, 80, 300), "Provider DRG Review", "review_priority", "Review Priority"),
-  slicer(v("priority", "state"), position(344, 112, 220, 80, 400), "Provider DRG Review", "provider_state", "Provider State"),
+  slicer(v("priority", "state"), position(344, 112, 220, 80, 400), "Provider DRG Review", "provider_state", "State"),
   slicer(v("priority", "drg-code"), position(580, 112, 220, 80, 500), "Provider DRG Review", "drg_code", "DRG Code"),
   slicer(v("priority", "drg-description"), position(816, 112, 760, 80, 600), "Provider DRG Review", "drg_description", "DRG Description"),
-  card(v("priority", "high-card"), position(48, 216, 426, 144, 700), "High Priority Count", { displayUnits: 1, precision: 0 }),
-  card(v("priority", "moderate-card"), position(490, 216, 426, 144, 800), "Moderate Priority Count", { displayUnits: 1, precision: 0 }),
-  card(v("priority", "routine-card"), position(932, 216, 426, 144, 900), "Routine Review Count", { displayUnits: 1, precision: 0 }),
-  card(v("priority", "share-card"), position(1374, 216, 498, 144, 1000), "High Priority Share", { displayUnits: 1, precision: 2 }),
+  card(v("priority", "high-card"), position(48, 216, 426, 144, 700), "High Priority Count", { displayUnits: 1, precision: 0, customFormatString: "#,0" }),
+  card(v("priority", "moderate-card"), position(490, 216, 426, 144, 800), "Moderate Priority Count", { displayUnits: 1, precision: 0, customFormatString: "#,0" }),
+  card(v("priority", "routine-card"), position(932, 216, 426, 144, 900), "Routine Review Count", { displayUnits: 1, precision: 0, customFormatString: "#,0" }),
+  card(v("priority", "share-card"), position(1374, 216, 498, 144, 1000), "High Priority Share", { displayUnits: 1, precision: 2, customFormatString: "0.00%" }),
   tableVisual(v("priority", "detail-table"), position(48, 392, 1824, 560, 1100), "Provider DRG Review", [
     { property: "provider_name", label: "Provider Name" },
-    { property: "provider_state", label: "Provider State" },
+    { property: "provider_state", label: "State" },
     { property: "drg_code", label: "DRG Code" },
     { property: "drg_description", label: "DRG Description" },
-    { property: "total_discharges", label: "Total Discharges" },
-    { property: "estimated_aggregate_total_payment", label: "Estimated Aggregate Total Payment" },
-    { property: "avg_total_payment", label: "Average Total Payment" },
-    { property: "drg_median_total_payment", label: "DRG Median Total Payment" },
-    { property: "payment_difference_pct", label: "Payment Difference Percent" },
-    { property: "payment_percentile_within_drg", label: "Payment Percentile within DRG" },
-    { property: "exposure_percentile", label: "Exposure Percentile" },
-    { property: "discharge_percentile", label: "Discharge Percentile" },
+    { property: "total_discharges", label: "Total Discharges", format: "#,0" },
+    { property: "estimated_aggregate_total_payment", label: "Estimated Aggregate Total Payment", format: "$#,0.00" },
+    { property: "avg_total_payment", label: "Average Total Payment", format: "$#,0.00" },
+    { property: "drg_median_total_payment", label: "DRG Median Total Payment", format: "$#,0.00" },
+    { property: "payment_difference_pct", label: "Payment Difference %", format: "0.00%" },
+    { property: "payment_percentile_within_drg", label: "Payment Percentile within DRG", format: "0.00%" },
+    { property: "exposure_percentile", label: "Exposure Percentile", format: "0.00%" },
+    { property: "discharge_percentile", label: "Discharge Percentile", format: "0.00%" },
     { property: "review_priority", label: "Review Priority" },
   ], "Provider-DRG Review Detail", [
     { property: "review_priority", direction: "Ascending" },

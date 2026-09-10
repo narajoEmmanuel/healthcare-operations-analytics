@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "Provider DRG Review.provider_state",
-              "nativeQueryRef": "Provider State"
+              "nativeQueryRef": "provider_state",
+              "displayName": "State"
             }
           ]
         }
@@ -60,7 +61,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Provider State'"
+                  "Value": "'State'"
                 }
               }
             }
@@ -69,6 +70,19 @@
       ]
     },
     "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "padding": [
         {
           "properties": {

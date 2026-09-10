@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "Provider DRG Review.drg_code",
-              "nativeQueryRef": "DRG Code (select one)"
+              "nativeQueryRef": "drg_code",
+              "displayName": "DRG Code (select one)"
             }
           ]
         }
@@ -96,6 +97,19 @@
       ]
     },
     "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "padding": [
         {
           "properties": {

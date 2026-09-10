@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "DRG Benchmark.drg_code",
-              "nativeQueryRef": "DRG Code"
+              "nativeQueryRef": "drg_code",
+              "displayName": "DRG Code"
             },
             {
               "field": {
@@ -41,7 +42,8 @@
                 }
               },
               "queryRef": "DRG Benchmark.drg_description",
-              "nativeQueryRef": "DRG Description"
+              "nativeQueryRef": "drg_description",
+              "displayName": "DRG Description"
             },
             {
               "field": {
@@ -55,7 +57,9 @@
                 }
               },
               "queryRef": "DRG Benchmark.provider_count",
-              "nativeQueryRef": "Provider Count"
+              "nativeQueryRef": "provider_count",
+              "displayName": "Provider Count",
+              "format": "#,0"
             },
             {
               "field": {
@@ -69,7 +73,9 @@
                 }
               },
               "queryRef": "DRG Benchmark.total_discharges",
-              "nativeQueryRef": "Total Discharges"
+              "nativeQueryRef": "total_discharges",
+              "displayName": "Total Discharges",
+              "format": "#,0"
             },
             {
               "field": {
@@ -83,7 +89,9 @@
                 }
               },
               "queryRef": "DRG Benchmark.discharge_share_national",
-              "nativeQueryRef": "National Discharge Share"
+              "nativeQueryRef": "discharge_share_national",
+              "displayName": "National Discharge Share",
+              "format": "0.00%"
             },
             {
               "field": {
@@ -97,7 +105,9 @@
                 }
               },
               "queryRef": "DRG Benchmark.estimated_aggregate_total_payment",
-              "nativeQueryRef": "Estimated Aggregate Total Payment"
+              "nativeQueryRef": "estimated_aggregate_total_payment",
+              "displayName": "Estimated Aggregate Total Payment",
+              "format": "$#,0.00"
             },
             {
               "field": {
@@ -111,7 +121,9 @@
                 }
               },
               "queryRef": "DRG Benchmark.provider_average_total_payment",
-              "nativeQueryRef": "Provider Average Total Payment"
+              "nativeQueryRef": "provider_average_total_payment",
+              "displayName": "Provider Average Total Payment",
+              "format": "$#,0.00"
             },
             {
               "field": {
@@ -125,7 +137,9 @@
                 }
               },
               "queryRef": "DRG Benchmark.provider_median_total_payment",
-              "nativeQueryRef": "Provider Median Total Payment"
+              "nativeQueryRef": "provider_median_total_payment",
+              "displayName": "Provider Median Total Payment",
+              "format": "$#,0.00"
             },
             {
               "field": {
@@ -139,7 +153,9 @@
                 }
               },
               "queryRef": "DRG Benchmark.discharge_weighted_total_payment",
-              "nativeQueryRef": "Discharge-Weighted Total Payment"
+              "nativeQueryRef": "discharge_weighted_total_payment",
+              "displayName": "Discharge-Weighted Total Payment",
+              "format": "$#,0.00"
             }
           ]
         }
@@ -274,6 +290,19 @@
                       "Value": "'#243B53'"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

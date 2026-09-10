@@ -6,7 +6,7 @@
 
 Hospital strategy and finance teams cannot review every inpatient service with the same level of attention. The analysis will support one decision:
 
-> **Which Medicare inpatient service categories should be prioritized for deeper financial and performance review based on their activity volume, payment contribution, and payment variation relative to comparable hospitals?**
+> **Which Medicare inpatient service categories should be prioritized for deeper financial and performance review based on their activity volume, estimated payment exposure, and payment variation for the same DRG?**
 
 The project is an independent portfolio analysis using public CMS data. It does not represent work performed for CMS or for a hospital.
 
@@ -14,7 +14,7 @@ The project is an independent portfolio analysis using public CMS data. It does 
 
 Medicare inpatient activity is distributed across many hospitals and types of hospitalizations. CMS groups clinically similar inpatient cases into Diagnosis Related Groups (DRGs) and reports discharge volume, hospital charges, average total payments, and average Medicare payments for each hospital and DRG combination (Centers for Medicare & Medicaid Services [CMS], 2024, 2026a).
 
-Reviewing volume alone may prioritize common services without considering their financial significance. Reviewing average payment alone may overemphasize expensive but low-volume services. A more useful screening approach combines **how frequently a service occurs, its estimated payment contribution, and how its payment compares with the same type of hospitalization across other hospitals**.
+Reviewing volume alone may prioritize common services without considering their financial significance. Reviewing average payment alone may overemphasize expensive but low-volume services. A more useful screening approach combines **how frequently a service occurs, its estimated payment exposure, and how its payment compares with the same type of hospitalization across other hospitals**.
 
 The purpose is not to label hospitals as efficient, inefficient, underpaid, or overpaid. Medicare inpatient payments are influenced by the DRG assigned to the case and additional factors such as geographic wage adjustments, teaching-hospital status, treatment of low-income populations, and unusually costly cases (CMS, 2026b). Payment differences therefore identify areas for further investigation, not their underlying cause.
 
@@ -29,11 +29,11 @@ The purpose is not to label hospitals as efficient, inefficient, underpaid, or o
 
 ## Analytical Objectives
 
-1. **Measure portfolio importance:** identify the inpatient service categories that account for the greatest Medicare discharge volume and estimated payment contribution.
+1. **Measure portfolio importance:** identify the inpatient service categories that account for the greatest Medicare discharge volume and estimated aggregate payment exposure.
 2. **Benchmark payment variation:** compare average Medicare payments for the same DRG across hospitals and appropriate peer groups.
 3. **Prioritize review:** identify high-materiality service categories and hospital-service combinations with payment patterns that warrant deeper investigation.
 
-Any project-derived estimate of payment contribution will be explicitly defined and validated before use. It will not be presented as hospital revenue or profitability.
+Estimated Aggregate Total Payment is Total Discharges × Average Total Payment. It is not hospital revenue or profitability.
 
 ## Scope
 
@@ -43,7 +43,7 @@ The core analysis will focus on:
 
 - inpatient discharge volume
 - DRG-based service mix
-- estimated payment contribution
+- estimated aggregate payment exposure
 - payment variation within comparable DRGs
 - hospital and geographic benchmarking
 - prioritization of material or unusual patterns for further review

@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "Provider DRG Review.provider_name",
-              "nativeQueryRef": "Provider Name"
+              "nativeQueryRef": "provider_name",
+              "displayName": "Provider Name"
             },
             {
               "field": {
@@ -41,7 +42,8 @@
                 }
               },
               "queryRef": "Provider DRG Review.provider_state",
-              "nativeQueryRef": "Provider State"
+              "nativeQueryRef": "provider_state",
+              "displayName": "State"
             },
             {
               "field": {
@@ -55,7 +57,8 @@
                 }
               },
               "queryRef": "Provider DRG Review.drg_code",
-              "nativeQueryRef": "DRG Code"
+              "nativeQueryRef": "drg_code",
+              "displayName": "DRG Code"
             },
             {
               "field": {
@@ -69,7 +72,8 @@
                 }
               },
               "queryRef": "Provider DRG Review.drg_description",
-              "nativeQueryRef": "DRG Description"
+              "nativeQueryRef": "drg_description",
+              "displayName": "DRG Description"
             },
             {
               "field": {
@@ -83,7 +87,9 @@
                 }
               },
               "queryRef": "Provider DRG Review.total_discharges",
-              "nativeQueryRef": "Total Discharges"
+              "nativeQueryRef": "total_discharges",
+              "displayName": "Total Discharges",
+              "format": "#,0"
             },
             {
               "field": {
@@ -97,7 +103,9 @@
                 }
               },
               "queryRef": "Provider DRG Review.estimated_aggregate_total_payment",
-              "nativeQueryRef": "Estimated Aggregate Total Payment"
+              "nativeQueryRef": "estimated_aggregate_total_payment",
+              "displayName": "Estimated Aggregate Total Payment",
+              "format": "$#,0.00"
             },
             {
               "field": {
@@ -111,7 +119,9 @@
                 }
               },
               "queryRef": "Provider DRG Review.avg_total_payment",
-              "nativeQueryRef": "Average Total Payment"
+              "nativeQueryRef": "avg_total_payment",
+              "displayName": "Average Total Payment",
+              "format": "$#,0.00"
             },
             {
               "field": {
@@ -125,7 +135,9 @@
                 }
               },
               "queryRef": "Provider DRG Review.drg_median_total_payment",
-              "nativeQueryRef": "DRG Median Total Payment"
+              "nativeQueryRef": "drg_median_total_payment",
+              "displayName": "DRG Median Total Payment",
+              "format": "$#,0.00"
             },
             {
               "field": {
@@ -139,7 +151,9 @@
                 }
               },
               "queryRef": "Provider DRG Review.payment_difference_pct",
-              "nativeQueryRef": "Payment Difference Percent"
+              "nativeQueryRef": "payment_difference_pct",
+              "displayName": "Payment Difference %",
+              "format": "0.00%"
             },
             {
               "field": {
@@ -153,7 +167,9 @@
                 }
               },
               "queryRef": "Provider DRG Review.payment_percentile_within_drg",
-              "nativeQueryRef": "Payment Percentile within DRG"
+              "nativeQueryRef": "payment_percentile_within_drg",
+              "displayName": "Payment Percentile within DRG",
+              "format": "0.00%"
             },
             {
               "field": {
@@ -167,7 +183,9 @@
                 }
               },
               "queryRef": "Provider DRG Review.exposure_percentile",
-              "nativeQueryRef": "Exposure Percentile"
+              "nativeQueryRef": "exposure_percentile",
+              "displayName": "Exposure Percentile",
+              "format": "0.00%"
             },
             {
               "field": {
@@ -181,7 +199,9 @@
                 }
               },
               "queryRef": "Provider DRG Review.discharge_percentile",
-              "nativeQueryRef": "Discharge Percentile"
+              "nativeQueryRef": "discharge_percentile",
+              "displayName": "Discharge Percentile",
+              "format": "0.00%"
             },
             {
               "field": {
@@ -195,7 +215,8 @@
                 }
               },
               "queryRef": "Provider DRG Review.review_priority",
-              "nativeQueryRef": "Review Priority"
+              "nativeQueryRef": "review_priority",
+              "displayName": "Review Priority"
             }
           ]
         }
@@ -343,6 +364,19 @@
                       "Value": "'#243B53'"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

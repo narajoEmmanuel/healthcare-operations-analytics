@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "DRG Benchmark.drg_code",
-              "nativeQueryRef": "DRG Code"
+              "nativeQueryRef": "drg_code",
+              "displayName": "DRG Code"
             }
           ]
         },
@@ -50,7 +51,8 @@
                 }
               },
               "queryRef": "Sum(DRG Benchmark.total_discharges)",
-              "nativeQueryRef": "Total Discharges"
+              "nativeQueryRef": "Sum of total_discharges",
+              "displayName": "Total Discharges"
             }
           ]
         },
@@ -73,7 +75,8 @@
                 }
               },
               "queryRef": "Min(DRG Benchmark.drg_description)",
-              "nativeQueryRef": "DRG Description"
+              "nativeQueryRef": "Min of drg_description",
+              "displayName": "DRG Description"
             },
             {
               "field": {
@@ -92,7 +95,8 @@
                 }
               },
               "queryRef": "Sum(DRG Benchmark.estimated_aggregate_total_payment)",
-              "nativeQueryRef": "Estimated Aggregate Total Payment"
+              "nativeQueryRef": "Sum of estimated_aggregate_total_payment",
+              "displayName": "Estimated Aggregate Total Payment"
             },
             {
               "field": {
@@ -111,7 +115,8 @@
                 }
               },
               "queryRef": "Sum(DRG Benchmark.provider_count)",
-              "nativeQueryRef": "Provider Count"
+              "nativeQueryRef": "Sum of provider_count",
+              "displayName": "Provider Count"
             }
           ]
         }
@@ -158,6 +163,20 @@
                 }
               }
             },
+            "optimizeLabelDisplay": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "labelOverflow": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "labelDisplayUnits": {
               "expr": {
                 "Literal": {
@@ -176,6 +195,26 @@
               "expr": {
                 "Literal": {
                   "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1000000D"
+                }
+              }
+            },
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "2L"
                 }
               }
             }
@@ -223,6 +262,19 @@
                       "Value": "'#243B53'"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

@@ -86,7 +86,13 @@ for (const field of ["provider_key", "drg_key", "source_sha256"]) {
 const relationships = fs.readFileSync(path.join(modelRoot, "definition", "relationships.tmdl"), "utf8").trim();
 if (relationships) fail("Independent-view model unexpectedly contains relationships");
 
+const modelText = fs.readFileSync(path.join(modelRoot, "definition", "model.tmdl"), "utf8");
+if (!/^\tculture: en-US$/m.test(modelText)) fail("Semantic model culture must be en-US");
+if (!/^\tsourceQueryCulture: en-US$/m.test(modelText)) fail("Semantic model sourceQueryCulture must be en-US");
+
 const pagesMetadata = readJson(path.join(pagesRoot, "pages.json"));
+const reportSettings = readJson(path.join(reportRoot, "definition", "report.json"))?.settings;
+if (reportSettings?.locale !== "en-US") fail("Report display locale must be en-US");
 const expectedPageNames = ["Executive Overview", "Service Category Analysis", "Payment Benchmarking", "Review Priorities"];
 const pageIds = pagesMetadata?.pageOrder ?? [];
 if (pageIds.length !== 4 || new Set(pageIds).size !== 4) fail("pages.json must contain four unique page IDs");
@@ -110,6 +116,21 @@ for (let i = 0; i < pageIds.length; i += 1) {
     const pos = visual?.position;
     if (!pos || pos.x < 0 || pos.y < 0 || pos.x + pos.width > 1920 || pos.y + pos.height > 1080) {
       fail(`Visual outside 1920x1080 canvas: ${page?.displayName}/${visual?.name}`);
+    }
+    if (visual?.visual?.visualType !== "textbox") {
+      const subtitleState = visual?.visual?.visualContainerObjects?.subTitle?.[0]?.properties?.show?.expr?.Literal?.Value;
+      if (subtitleState !== "false") fail(`Auto-subtitle is not disabled: ${page?.displayName}/${visual?.name}`);
+    }
+    if (visual?.visual?.visualType === "tableEx") {
+      const projections = visual?.visual?.query?.queryState?.Values?.projections ?? [];
+      for (const item of projections) {
+        if (!item.displayName || item.displayName.includes("_")) {
+          fail(`Table projection lacks a human-readable display name: ${page?.displayName}/${visual?.name}`);
+        }
+        if (item.field?.Column?.Property === "payment_difference_pct" && item.format !== "0.00%") {
+          fail(`Payment Difference % must use ratio formatting: ${page?.displayName}/${visual?.name}`);
+        }
+      }
     }
     validateReferences(visual, `${page?.displayName}/${visual?.name}`);
   }

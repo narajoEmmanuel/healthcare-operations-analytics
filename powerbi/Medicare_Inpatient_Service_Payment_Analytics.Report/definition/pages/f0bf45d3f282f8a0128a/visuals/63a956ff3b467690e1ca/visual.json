@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "DRG Benchmark.drg_description",
-              "nativeQueryRef": "DRG Description"
+              "nativeQueryRef": "drg_description",
+              "displayName": "DRG Description"
             }
           ]
         }
@@ -69,6 +70,19 @@
       ]
     },
     "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "padding": [
         {
           "properties": {

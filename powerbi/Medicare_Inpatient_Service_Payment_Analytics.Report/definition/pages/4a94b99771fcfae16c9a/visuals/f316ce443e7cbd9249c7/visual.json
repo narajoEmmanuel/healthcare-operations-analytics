@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "Provider DRG Review.review_priority",
-              "nativeQueryRef": "Review Priority"
+              "nativeQueryRef": "review_priority",
+              "displayName": "Review Priority"
             }
           ]
         }
@@ -69,6 +70,19 @@
       ]
     },
     "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "padding": [
         {
           "properties": {

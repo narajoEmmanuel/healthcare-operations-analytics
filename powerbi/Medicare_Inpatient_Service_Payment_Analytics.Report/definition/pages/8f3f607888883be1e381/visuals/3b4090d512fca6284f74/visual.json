@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "6de38edfc9622ca66230",
+  "name": "3b4090d512fca6284f74",
   "position": {
-    "x": 48,
-    "y": 128,
-    "z": 300,
-    "height": 152,
-    "width": 426,
-    "tabOrder": 300
+    "x": 1152,
+    "y": 216,
+    "z": 950,
+    "height": 144,
+    "width": 352,
+    "tabOrder": 950
   },
   "visual": {
     "visualType": "cardVisual",
@@ -47,7 +47,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "28D"
+                  "Value": "24D"
                 }
               }
             },
@@ -61,14 +61,21 @@
             "labelDisplayUnits": {
               "expr": {
                 "Literal": {
-                  "Value": "1000000D"
+                  "Value": "1D"
                 }
               }
             },
             "labelPrecision": {
               "expr": {
                 "Literal": {
-                  "Value": "2L"
+                  "Value": "0L"
+                }
+              }
+            },
+            "customFormatString": {
+              "expr": {
+                "Literal": {
+                  "Value": "'#,0'"
                 }
               }
             }

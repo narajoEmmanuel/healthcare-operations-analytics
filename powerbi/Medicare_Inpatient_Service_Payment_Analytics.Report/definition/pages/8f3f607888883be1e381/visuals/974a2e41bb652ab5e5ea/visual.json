@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "Provider DRG Review.provider_ruca",
-              "nativeQueryRef": "Provider RUCA"
+              "nativeQueryRef": "provider_ruca",
+              "displayName": "RUCA"
             }
           ]
         }
@@ -60,7 +61,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Provider RUCA'"
+                  "Value": "'RUCA'"
                 }
               }
             }
@@ -69,6 +70,19 @@
       ]
     },
     "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "padding": [
         {
           "properties": {

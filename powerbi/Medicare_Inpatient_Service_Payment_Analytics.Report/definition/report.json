@@ -73,6 +73,8 @@
     }
   ],
   "settings": {
+    "locale": "en-US",
+    "defaultDisplayUnitsToNone": false,
     "useStylableVisualContainerHeader": true,
     "exportDataMode": "AllowSummarized",
     "defaultDrillFilterOtherVisuals": true,

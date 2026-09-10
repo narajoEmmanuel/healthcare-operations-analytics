@@ -14,7 +14,7 @@
 | Validated row grain | One provider + one DRG per row for the selected reporting year |
 | Validated natural candidate key | `Rndrng_Prvdr_CCN + DRG_Cd` |
 
-The complete retrieval contained 145,879 distinct provider-DRG combinations and zero duplicated combinations. This validates the pair as a natural candidate key for the retrieved 2024 source dataset; it is not yet a PostgreSQL primary-key design decision.
+The complete retrieval contained 145,879 distinct provider-DRG combinations and zero duplicated combinations. This validates the pair as a natural candidate key for the retrieved 2024 source dataset. The analytics fact table keys each observation by reporting year, provider CCN, and DRG code.
 
 ## Data Source Discovery Path
 

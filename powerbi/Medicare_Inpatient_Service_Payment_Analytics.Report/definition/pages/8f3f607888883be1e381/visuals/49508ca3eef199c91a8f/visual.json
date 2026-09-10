@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "6de38edfc9622ca66230",
+  "name": "49508ca3eef199c91a8f",
   "position": {
-    "x": 48,
-    "y": 128,
-    "z": 300,
-    "height": 152,
-    "width": 426,
-    "tabOrder": 300
+    "x": 1520,
+    "y": 216,
+    "z": 975,
+    "height": 144,
+    "width": 352,
+    "tabOrder": 975
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,11 +23,11 @@
                       "Entity": "Provider DRG Review"
                     }
                   },
-                  "Property": "Total Discharges"
+                  "Property": "Estimated Aggregate Total Payment"
                 }
               },
-              "queryRef": "Provider DRG Review.Total Discharges",
-              "nativeQueryRef": "Total Discharges"
+              "queryRef": "Provider DRG Review.Estimated Aggregate Total Payment",
+              "nativeQueryRef": "Estimated Aggregate Total Payment"
             }
           ]
         }
@@ -47,7 +47,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "28D"
+                  "Value": "22D"
                 }
               }
             },
@@ -61,7 +61,7 @@
             "labelDisplayUnits": {
               "expr": {
                 "Literal": {
-                  "Value": "1000000D"
+                  "Value": "1D"
                 }
               }
             },
@@ -69,6 +69,13 @@
               "expr": {
                 "Literal": {
                   "Value": "2L"
+                }
+              }
+            },
+            "customFormatString": {
+              "expr": {
+                "Literal": {
+                  "Value": "'$#,0.00'"
                 }
               }
             }
@@ -91,7 +98,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Total Discharges'"
+                  "Value": "'Estimated Aggregate Total Payment'"
                 }
               }
             },

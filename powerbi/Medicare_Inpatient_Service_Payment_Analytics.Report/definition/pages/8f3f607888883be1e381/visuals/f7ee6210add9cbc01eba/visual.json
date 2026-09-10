@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "Provider DRG Review.provider_name",
-              "nativeQueryRef": "Provider Name"
+              "nativeQueryRef": "provider_name",
+              "displayName": "Provider Name"
             }
           ]
         },
@@ -82,7 +83,8 @@
                 }
               },
               "queryRef": "Sum(Provider DRG Review.total_discharges)",
-              "nativeQueryRef": "Total Discharges"
+              "nativeQueryRef": "Sum of total_discharges",
+              "displayName": "Total Discharges"
             },
             {
               "field": {
@@ -101,7 +103,8 @@
                 }
               },
               "queryRef": "Sum(Provider DRG Review.estimated_aggregate_total_payment)",
-              "nativeQueryRef": "Estimated Aggregate Total Payment"
+              "nativeQueryRef": "Sum of estimated_aggregate_total_payment",
+              "displayName": "Estimated Aggregate Total Payment"
             },
             {
               "field": {
@@ -120,7 +123,9 @@
                 }
               },
               "queryRef": "Average(Provider DRG Review.payment_difference_pct)",
-              "nativeQueryRef": "Payment Difference from DRG Median"
+              "nativeQueryRef": "Average of payment_difference_pct",
+              "displayName": "Payment Difference %",
+              "format": "0.00%"
             }
           ]
         }
@@ -162,10 +167,24 @@
                 }
               }
             },
+            "optimizeLabelDisplay": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "labelOverflow": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
             "labelDisplayUnits": {
               "expr": {
                 "Literal": {
-                  "Value": "1000D"
+                  "Value": "1D"
                 }
               }
             },
@@ -180,6 +199,13 @@
               "expr": {
                 "Literal": {
                   "Value": "10D"
+                }
+              }
+            },
+            "valueCustomFormatString": {
+              "expr": {
+                "Literal": {
+                  "Value": "'$0,.0\"K\"'"
                 }
               }
             }
@@ -227,6 +253,19 @@
                       "Value": "'#243B53'"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "DRG Benchmark.drg_code",
-              "nativeQueryRef": "DRG Code"
+              "nativeQueryRef": "drg_code",
+              "displayName": "DRG Code"
             }
           ]
         }
@@ -69,6 +70,19 @@
       ]
     },
     "visualContainerObjects": {
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "padding": [
         {
           "properties": {
